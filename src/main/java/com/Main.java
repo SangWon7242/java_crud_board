@@ -21,6 +21,13 @@ public class Main {
         String content = sc.nextLine();
 
         int id = ++lastArticleId;
+
+        Article article = new Article();
+        article.id = id;
+        article.title = title;
+        article.content = content;
+
+        System.out.println("생성 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
       }
       else if(cmd.equals("exit")) {
@@ -35,4 +42,10 @@ public class Main {
 
     sc.close();
   }
+}
+
+class Article {
+  int id;
+  String title;
+  String content;
 }
