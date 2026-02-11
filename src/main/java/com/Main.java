@@ -17,7 +17,6 @@ public class Main {
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    Article lastArticle = null;
     List<Article> articles = new ArrayList<>();
 
     makeArticleTestData(articles);
@@ -42,15 +41,13 @@ public class Main {
 
         Article article = new Article(id, title, content);
 
-        lastArticle = article;
-
         articles.add(article);
 
         System.out.println("생성 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
       } else if (cmd.equals("/usr/article/detail")) {
 
-        Article article = lastArticle;
+        Article article = articles.getLast();
 
         if (article == null) {
           System.out.println("게시물이 존재하지 않습니다.");
