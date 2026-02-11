@@ -6,6 +6,8 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int lastArticleId = 0;
+    Article lastArticle = null;
+
     System.out.println("== 자바 게시판 시작 ==");
 
     while (true) {
@@ -24,8 +26,24 @@ public class Main {
 
         Article article = new Article(id, title, content);
 
+        lastArticle = article;
+
         System.out.println("생성 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
+      } else if(cmd.equals("/usr/article/detail")) {
+
+        Article article = lastArticle;
+
+        if(article == null) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
+        }
+
+        System.out.printf("== %d번 게시물 상세보기 ==\n", article.id);
+        System.out.printf("번호 : %d\n", article.id);
+        System.out.printf("제목 : %s\n", article.title);
+        System.out.printf("내용 : %s\n", article.content);
+
       }
       else if(cmd.equals("exit")) {
         break;
