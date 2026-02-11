@@ -1,6 +1,7 @@
 package com;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -45,7 +46,26 @@ public class Main {
 
         System.out.println("생성 된 게시물 객체 : " + article);
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
-      } else if (cmd.equals("/usr/article/detail")) {
+      } else if (cmd.startsWith("/usr/article/detail/")) {
+        String[] cmdBits = cmd.split("/");
+        System.out.println(Arrays.toString(cmdBits));
+        // [, usr, article, detail, 1]
+
+        if (cmdBits.length < 5) {
+          System.out.println("명령어를 올바르게 입력해주세요.");
+          System.out.println("예) /usr/article/detail/1");
+          continue;
+        }
+
+        int id = 0;
+        try {
+          id = Integer.parseInt(cmdBits[cmdBits.length - 1]);
+        } catch (NumberFormatException e) {
+          System.out.println("게시물 번호는 정수로 입력해주세요.");
+          continue;
+        }
+
+        // 할일: 이후에는 입력한 id 값과 게시물 객체의 번호와 일치한 게시물 데이터를 가져오기
 
         Article article = articles.getLast();
 
