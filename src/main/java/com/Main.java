@@ -8,10 +8,6 @@ import java.util.stream.IntStream;
 
 public class Main {
   static void makeArticleTestData(List<Article> articles) {
-    /*articles.add(new Article(1, "제목1", "내용1"));
-    articles.add(new Article(2, "제목2", "내용2"));
-    articles.add(new Article(3, "제목3", "내용3"));*/
-
     IntStream.rangeClosed(1, 3)
         .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
   }
@@ -48,8 +44,6 @@ public class Main {
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
       } else if (cmd.startsWith("/usr/article/detail/")) {
         String[] cmdBits = cmd.split("/");
-        // System.out.println(Arrays.toString(cmdBits));
-        // [, usr, article, detail, 1]
 
         if (cmdBits.length < 5) {
           System.out.println("명령어를 올바르게 입력해주세요.");
@@ -64,19 +58,6 @@ public class Main {
           System.out.println("게시물 번호는 정수로 입력해주세요.");
           continue;
         }
-
-        // 할일: 이후에는 입력한 id 값과 게시물 객체의 번호와 일치한 게시물 데이터를 가져오기
-
-        /*
-        // v1
-        Article foundArticle = null;
-        for(Article article : articles) {
-          if(article.id == id) {
-            foundArticle = article;
-            break;
-          }
-        }
-        */
 
         int finalId = id;
         Article foundArticle = articles.stream()
@@ -94,7 +75,21 @@ public class Main {
         System.out.printf("제목 : %s\n", foundArticle.title);
         System.out.printf("내용 : %s\n", foundArticle.content);
 
-      } else if(cmd.startsWith("/usr/article/modify/")) {
+      } else if (cmd.equals("/usr/article/list")) {
+        if (articles.isEmpty()) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
+        }
+
+        System.out.println("== 게시물 리스트 ==");
+
+        System.out.println("번호 | 제목");
+
+        for (int i = articles.size() - 1; i >= 0; i--) {
+          Article article = articles.get(i);
+          System.out.printf("%d | %s\n", article.id, article.title);
+        }
+      } else if (cmd.startsWith("/usr/article/modify/")) {
         String[] cmdBits = cmd.split("/");
 
         if (cmdBits.length < 5) {
@@ -110,7 +105,7 @@ public class Main {
           System.out.println("게시물 번호는 정수로 입력해주세요.");
           continue;
         }
-        
+
         int finalId = id;
         Article foundArticle = articles.stream()
             .filter(article -> article.id == finalId)
@@ -133,20 +128,36 @@ public class Main {
         foundArticle.content = content;
         System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
 
-      } else if (cmd.equals("/usr/article/list")) {
-        if(articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
+      } else if (cmd.startsWith("/usr/article/delete/")) {
+        String[] cmdBits = cmd.split("/");
+
+        if (cmdBits.length < 5) {
+          System.out.println("명령어를 올바르게 입력해주세요.");
+          System.out.println("예) /usr/article/detail/1");
           continue;
         }
 
-        System.out.println("== 게시물 리스트 ==");
-
-        System.out.println("번호 | 제목");
-
-        for(int i = articles.size() - 1; i >= 0; i--) {
-          Article article = articles.get(i);
-          System.out.printf("%d | %s\n", article.id, article.title);
+        int id = 0;
+        try {
+          id = Integer.parseInt(cmdBits[cmdBits.length - 1]);
+        } catch (NumberFormatException e) {
+          System.out.println("게시물 번호는 정수로 입력해주세요.");
+          continue;
         }
+
+        int finalId = id;
+        Article foundArticle = articles.stream()
+            .filter(article -> article.id == finalId)
+            .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
+            .orElse(null); // 못 찾은 경우에는 null을 넣어라
+
+        if (foundArticle == null) {
+          System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
+          continue;
+        }
+
+        articles.remove(foundArticle);
+        System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 
       } else if (cmd.equals("exit")) {
         break;
