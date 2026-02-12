@@ -8,18 +8,24 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class App {
-  void makeArticleTestData(List<Article> articles) {
+  List<Article> articles;
+  int lastArticleId;
+
+  public App() {
+    articles = new ArrayList<>();
+
+    makeArticleTestData();
+
+    lastArticleId = articles.get(articles.size() - 1).id;
+  }
+
+  void makeArticleTestData() {
     IntStream.rangeClosed(1, 3)
         .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
   }
 
   public void run() {
     Scanner sc = new Scanner(System.in);
-    List<Article> articles = new ArrayList<>();
-
-    makeArticleTestData(articles);
-
-    int lastArticleId = articles.get(articles.size() - 1).id;
 
     System.out.println("== 자바 게시판 시작 ==");
 
@@ -28,16 +34,15 @@ public class App {
       String cmd = sc.nextLine();
 
       if (cmd.equals("/usr/article/write")) {
-        actionUsrArticleWrite(sc, lastArticleId, articles);
-        lastArticleId++;
+        actionUsrArticleWrite(sc);
       } else if (cmd.startsWith("/usr/article/detail/")) {
-        actionUsrArticleDetail(cmd, articles);
+        actionUsrArticleDetail(cmd);
       } else if (cmd.equals("/usr/article/list")) {
-        actionUsrArticleList(articles);
+        actionUsrArticleList();
       } else if (cmd.startsWith("/usr/article/modify/")) {
-        actionUsrArticleModify(cmd, sc, articles);
+        actionUsrArticleModify(cmd, sc);
       } else if (cmd.startsWith("/usr/article/delete/")) {
-        actionUsrArticleDelete(cmd, articles);
+        actionUsrArticleDelete(cmd);
       } else if (cmd.equals("exit")) {
         break;
       } else {
@@ -50,7 +55,7 @@ public class App {
     sc.close();
   }
 
-  void actionUsrArticleList(List<Article> articles) {
+  void actionUsrArticleList() {
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
@@ -66,7 +71,7 @@ public class App {
     }
   }
 
-  void actionUsrArticleDelete(String cmd, List<Article> articles) {
+  void actionUsrArticleDelete(String cmd) {
     String[] cmdBits = cmd.split("/");
 
     if (cmdBits.length < 5) {
@@ -99,7 +104,7 @@ public class App {
 
   }
 
-  void actionUsrArticleModify(String cmd, Scanner sc, List<Article> articles) {
+  void actionUsrArticleModify(String cmd, Scanner sc) {
     String[] cmdBits = cmd.split("/");
 
     if (cmdBits.length < 5) {
@@ -139,7 +144,7 @@ public class App {
     System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
-  void actionUsrArticleDetail(String cmd, List<Article> articles) {
+  void actionUsrArticleDetail(String cmd) {
     String[] cmdBits = cmd.split("/");
 
     if (cmdBits.length < 5) {
@@ -173,7 +178,7 @@ public class App {
     System.out.printf("내용 : %s\n", foundArticle.content);
   }
 
-  void actionUsrArticleWrite(Scanner sc, int lastArticleId, List<Article> articles) {
+  void actionUsrArticleWrite(Scanner sc) {
     System.out.println("== 게시물 작성 ==");
     System.out.print("제목 : ");
     String title = sc.nextLine();
