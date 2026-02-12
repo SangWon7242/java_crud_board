@@ -88,18 +88,14 @@ public class App {
       return;
     }
 
-    int finalId = id;
-    Article foundArticle = articles.stream()
-        .filter(article -> article.id == finalId)
-        .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
-        .orElse(null); // 못 찾은 경우에는 null을 넣어라
+    Article article = findById(id, articles);
 
-    if (foundArticle == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
       return;
     }
 
-    articles.remove(foundArticle);
+    articles.remove(article);
     System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 
   }
@@ -121,26 +117,22 @@ public class App {
       return;
     }
 
-    int finalId = id;
-    Article foundArticle = articles.stream()
-        .filter(article -> article.id == finalId)
-        .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
-        .orElse(null); // 못 찾은 경우에는 null을 넣어라
+    Article article = findById(id, articles);
 
-    if (foundArticle == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
       return;
     }
 
-    System.out.printf("== %d번 게시물 수정 ==\n", foundArticle.id);
+    System.out.printf("== %d번 게시물 수정 ==\n", article.id);
     System.out.print("수정 할 제목 : ");
     String title = sc.nextLine();
 
     System.out.print("수정 할 내용 : ");
     String content = sc.nextLine();
 
-    foundArticle.title = title;
-    foundArticle.content = content;
+    article.title = title;
+    article.content = content;
     System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
@@ -161,21 +153,17 @@ public class App {
       return;
     }
 
-    int finalId = id;
-    Article foundArticle = articles.stream()
-        .filter(article -> article.id == finalId)
-        .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
-        .orElse(null); // 못 찾은 경우에는 null을 넣어라
+    Article article = findById(id, articles);
 
-    if (foundArticle == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
       return;
     }
 
-    System.out.printf("== %d번 게시물 상세보기 ==\n", foundArticle.id);
-    System.out.printf("번호 : %d\n", foundArticle.id);
-    System.out.printf("제목 : %s\n", foundArticle.title);
-    System.out.printf("내용 : %s\n", foundArticle.content);
+    System.out.printf("== %d번 게시물 상세보기 ==\n", article.id);
+    System.out.printf("번호 : %d\n", article.id);
+    System.out.printf("제목 : %s\n", article.title);
+    System.out.printf("내용 : %s\n", article.content);
   }
 
   void actionUsrArticleWrite(Scanner sc) {
@@ -194,5 +182,13 @@ public class App {
 
     System.out.println("생성 된 게시물 객체 : " + article);
     System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
+  }
+  
+  // id를 기반으로 게시물을 찾는 메서드
+  Article findById(int id, List<Article> articles) {
+    return articles.stream()
+        .filter(article -> article.id == id)
+        .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
+        .orElse(null); // 못 찾은 경우에는 null을 넣어라
   }
 }
