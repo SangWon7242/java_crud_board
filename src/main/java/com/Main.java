@@ -94,6 +94,45 @@ public class Main {
         System.out.printf("제목 : %s\n", foundArticle.title);
         System.out.printf("내용 : %s\n", foundArticle.content);
 
+      } else if(cmd.startsWith("/usr/article/modify/")) {
+        String[] cmdBits = cmd.split("/");
+
+        if (cmdBits.length < 5) {
+          System.out.println("명령어를 올바르게 입력해주세요.");
+          System.out.println("예) /usr/article/detail/1");
+          continue;
+        }
+
+        int id = 0;
+        try {
+          id = Integer.parseInt(cmdBits[cmdBits.length - 1]);
+        } catch (NumberFormatException e) {
+          System.out.println("게시물 번호는 정수로 입력해주세요.");
+          continue;
+        }
+        
+        int finalId = id;
+        Article foundArticle = articles.stream()
+            .filter(article -> article.id == finalId)
+            .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
+            .orElse(null); // 못 찾은 경우에는 null을 넣어라
+
+        if (foundArticle == null) {
+          System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
+          continue;
+        }
+
+        System.out.printf("== %d번 게시물 수정 ==\n", foundArticle.id);
+        System.out.print("수정 할 제목 : ");
+        String title = sc.nextLine();
+
+        System.out.print("수정 할 내용 : ");
+        String content = sc.nextLine();
+
+        foundArticle.title = title;
+        foundArticle.content = content;
+        System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
+
       } else if (cmd.equals("/usr/article/list")) {
         if(articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
