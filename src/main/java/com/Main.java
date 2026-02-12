@@ -48,7 +48,7 @@ public class Main {
         System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
       } else if (cmd.startsWith("/usr/article/detail/")) {
         String[] cmdBits = cmd.split("/");
-        System.out.println(Arrays.toString(cmdBits));
+        // System.out.println(Arrays.toString(cmdBits));
         // [, usr, article, detail, 1]
 
         if (cmdBits.length < 5) {
@@ -67,17 +67,32 @@ public class Main {
 
         // 할일: 이후에는 입력한 id 값과 게시물 객체의 번호와 일치한 게시물 데이터를 가져오기
 
-        Article article = articles.getLast();
+        /*
+        // v1
+        Article foundArticle = null;
+        for(Article article : articles) {
+          if(article.id == id) {
+            foundArticle = article;
+            break;
+          }
+        }
+        */
 
-        if (article == null) {
-          System.out.println("게시물이 존재하지 않습니다.");
+        int finalId = id;
+        Article foundArticle = articles.stream()
+            .filter(article -> article.id == finalId)
+            .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
+            .orElse(null); // 못 찾은 경우에는 null을 넣어라
+
+        if (foundArticle == null) {
+          System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
           continue;
         }
 
-        System.out.printf("== %d번 게시물 상세보기 ==\n", article.id);
-        System.out.printf("번호 : %d\n", article.id);
-        System.out.printf("제목 : %s\n", article.title);
-        System.out.printf("내용 : %s\n", article.content);
+        System.out.printf("== %d번 게시물 상세보기 ==\n", foundArticle.id);
+        System.out.printf("번호 : %d\n", foundArticle.id);
+        System.out.printf("제목 : %s\n", foundArticle.title);
+        System.out.printf("내용 : %s\n", foundArticle.content);
 
       } else if (cmd.equals("/usr/article/list")) {
         if(articles.isEmpty()) {
