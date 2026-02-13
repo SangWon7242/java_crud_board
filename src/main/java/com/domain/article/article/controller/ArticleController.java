@@ -1,27 +1,16 @@
-package com.domain.article.article.ArticleController;
+package com.domain.article.article.controller;
 
 import com.container.Container;
 import com.domain.article.article.Article;
+import com.domain.article.article.service.ArticleService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class ArticleController {
-  public List<Article> articles;
-  public int lastArticleId;
+  private ArticleService articleService;
 
   public ArticleController() {
-    articles = new ArrayList<>();
-
-    makeArticleTestData();
-
-    lastArticleId = articles.get(articles.size() - 1).id;
-  }
-
-  void makeArticleTestData() {
-    IntStream.rangeClosed(1, 3)
-        .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
+    articleService = Container.articleService;
   }
 
   public void doWrite() {
@@ -32,14 +21,9 @@ public class ArticleController {
     System.out.print("내용 : ");
     String content = Container.sc.nextLine();
 
-    int id = ++lastArticleId;
+    Article article = articleService.write(title, content);
 
-    Article article = new Article(id, title, content);
-
-    articles.add(article);
-
-    System.out.println("생성 된 게시물 객체 : " + article);
-    System.out.printf("%d번 게시물이 작성되었습니다.\n", id);
+    System.out.printf("%d번 게시물이 작성되었습니다.\n", article.id);
   }
 
   public void showDetail(String cmd) {
@@ -48,7 +32,7 @@ public class ArticleController {
     if (cmdBits.length < 5) {
       System.out.println("명령어를 올바르게 입력해주세요.");
       System.out.println("예) /usr/article/detail/1");
-      return; // return을 만나면 함수는 그 즉시 종료, continue 비슷한 기능을 수행
+      return;
     }
 
     int id = 0;
@@ -59,7 +43,7 @@ public class ArticleController {
       return;
     }
 
-    Article article = findById(id, articles);
+    Article article = articleService.findById(id);
 
     if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
@@ -73,6 +57,8 @@ public class ArticleController {
   }
 
   public void showList() {
+    List<Article> articles = articleService.getArticles();
+
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
@@ -105,7 +91,7 @@ public class ArticleController {
       return;
     }
 
-    Article article = findById(id, articles);
+    Article article = articleService.findById(id);
 
     if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
@@ -119,8 +105,8 @@ public class ArticleController {
     System.out.print("수정 할 내용 : ");
     String content = Container.sc.nextLine();
 
-    article.title = title;
-    article.content = content;
+    articleService.modify(id, title, content);
+
     System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
@@ -141,22 +127,15 @@ public class ArticleController {
       return;
     }
 
-    Article article = findById(id, articles);
+    Article article = articleService.findById(id);
 
     if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
       return;
     }
 
-    articles.remove(article);
-    System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
-  }
+    articleService.delete(id);
 
-  // id를 기반으로 게시물을 찾는 메서드
-  Article findById(int id, List<Article> articles) {
-    return articles.stream()
-        .filter(article -> article.id == id)
-        .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
-        .orElse(null); // 못 찾은 경우에는 null을 넣어라
+    System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
   }
 }

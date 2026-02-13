@@ -1,13 +1,9 @@
 package com.app;
 
 import com.container.Container;
-import com.domain.article.article.Article;
-import com.domain.article.article.ArticleController.ArticleController;
+import com.domain.article.article.controller.ArticleController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class App {
   public ArticleController articleController;

@@ -1,9 +1,18 @@
 package com.domain.article.article;
 
 public class Article {
+  public static int lastId;
   public int id;
   public String title;
   public String content;
+
+  static {
+    lastId = 0;
+  }
+
+  public Article(String title, String content) {
+    this(++lastId, title, content);
+  }
 
   public Article(int id, String title, String content) {
     this.id = id;
