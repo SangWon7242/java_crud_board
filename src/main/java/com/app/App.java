@@ -1,7 +1,8 @@
 package com.app;
 
-import com.container.Container;
+import com.global.container.Container;
 import com.domain.article.article.controller.ArticleController;
+import com.global.rq.Rq;
 
 import java.util.Scanner;
 
@@ -21,16 +22,18 @@ public class App {
       System.out.print("명령) ");
       String cmd = sc.nextLine();
 
-      if (cmd.equals("/usr/article/write")) {
+      Rq rq = new Rq(cmd);
+
+      if (rq.getUrlPath().equals("/usr/article/write")) {
         articleController.doWrite();
-      } else if (cmd.startsWith("/usr/article/detail/")) {
-        articleController.showDetail(cmd);
-      } else if (cmd.equals("/usr/article/list")) {
-        articleController.showList();
-      } else if (cmd.startsWith("/usr/article/modify/")) {
-        articleController.doModify(cmd);
-      } else if (cmd.startsWith("/usr/article/delete/")) {
-        articleController.doDelete(cmd);
+      } else if (rq.getUrlPath().startsWith("/usr/article/detail/")) {
+        articleController.showDetail(rq);
+      } else if (rq.getUrlPath().equals("/usr/article/list")) {
+        articleController.showList(rq);
+      } else if (rq.getUrlPath().startsWith("/usr/article/modify/")) {
+        articleController.doModify(rq);
+      } else if (rq.getUrlPath().startsWith("/usr/article/delete/")) {
+        articleController.doDelete(rq);
       } else if (cmd.equals("exit")) {
         break;
       } else {

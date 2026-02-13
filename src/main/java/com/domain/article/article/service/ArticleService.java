@@ -1,6 +1,6 @@
 package com.domain.article.article.service;
 
-import com.container.Container;
+import com.global.container.Container;
 import com.domain.article.article.Article;
 import com.domain.article.article.repository.ArticleRepository;
 

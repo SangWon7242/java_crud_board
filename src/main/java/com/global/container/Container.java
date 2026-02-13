@@ -1,4 +1,4 @@
-package com.container;
+package com.global.container;
 
 import com.domain.article.article.controller.ArticleController;
 import com.domain.article.article.repository.ArticleRepository;

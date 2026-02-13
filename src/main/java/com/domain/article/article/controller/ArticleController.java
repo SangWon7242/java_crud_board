@@ -1,8 +1,9 @@
 package com.domain.article.article.controller;
 
-import com.container.Container;
+import com.global.container.Container;
 import com.domain.article.article.Article;
 import com.domain.article.article.service.ArticleService;
+import com.global.rq.Rq;
 
 import java.util.List;
 
@@ -26,20 +27,11 @@ public class ArticleController {
     System.out.printf("%d번 게시물이 작성되었습니다.\n", article.id);
   }
 
-  public void showDetail(String cmd) {
-    String[] cmdBits = cmd.split("/");
+  public void showDetail(Rq rq) {
+    int id = rq.getIntParamFromUrlPath(4, 0);
 
-    if (cmdBits.length < 5) {
-      System.out.println("명령어를 올바르게 입력해주세요.");
-      System.out.println("예) /usr/article/detail/1");
-      return;
-    }
-
-    int id = 0;
-    try {
-      id = Integer.parseInt(cmdBits[cmdBits.length - 1]);
-    } catch (NumberFormatException e) {
-      System.out.println("게시물 번호는 정수로 입력해주세요.");
+    if(id == 0) {
+      System.out.println("올바른 값을 입력해주세요.");
       return;
     }
 
@@ -56,7 +48,7 @@ public class ArticleController {
     System.out.printf("내용 : %s\n", article.content);
   }
 
-  public void showList() {
+  public void showList(Rq rq) {
     List<Article> articles = articleService.getArticles();
 
     if (articles.isEmpty()) {
@@ -74,20 +66,11 @@ public class ArticleController {
     }
   }
 
-  public void doModify(String cmd) {
-    String[] cmdBits = cmd.split("/");
+  public void doModify(Rq rq) {
+    int id = rq.getIntParamFromUrlPath(4, 0);
 
-    if (cmdBits.length < 5) {
-      System.out.println("명령어를 올바르게 입력해주세요.");
-      System.out.println("예) /usr/article/detail/1");
-      return;
-    }
-
-    int id = 0;
-    try {
-      id = Integer.parseInt(cmdBits[cmdBits.length - 1]);
-    } catch (NumberFormatException e) {
-      System.out.println("게시물 번호는 정수로 입력해주세요.");
+    if(id == 0) {
+      System.out.println("올바른 값을 입력해주세요.");
       return;
     }
 
@@ -110,20 +93,11 @@ public class ArticleController {
     System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
-  public void doDelete(String cmd) {
-    String[] cmdBits = cmd.split("/");
+  public void doDelete(Rq rq) {
+    int id = rq.getIntParamFromUrlPath(4, 0);
 
-    if (cmdBits.length < 5) {
-      System.out.println("명령어를 올바르게 입력해주세요.");
-      System.out.println("예) /usr/article/detail/1");
-      return;
-    }
-
-    int id = 0;
-    try {
-      id = Integer.parseInt(cmdBits[cmdBits.length - 1]);
-    } catch (NumberFormatException e) {
-      System.out.println("게시물 번호는 정수로 입력해주세요.");
+    if(id == 0) {
+      System.out.println("올바른 값을 입력해주세요.");
       return;
     }
 
