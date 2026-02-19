@@ -1,16 +1,26 @@
 package com.global.rq;
 
+import com.global.util.Util;
+
+import java.util.Map;
+
 public class Rq {
-  private String cmd;
+  private String url;
+  private Map<String, Object> params;
   private String urlPath;
 
-  public Rq(String cmd) {
-    this.cmd = cmd;
-    urlPath = cmd;
+  public Rq(String url) {
+    this.url = url;
+    this.params = Util.getParamsFromUrl(this.url);
+    this.urlPath = Util.getPathFromUrl(this.url);
   }
 
   public String getCmd() {
-    return cmd;
+    return url;
+  }
+
+  public Map<String, Object> getParams() {
+    return params;
   }
 
   public String getUrlPath() {
