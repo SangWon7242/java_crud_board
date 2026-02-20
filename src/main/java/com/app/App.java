@@ -24,15 +24,15 @@ public class App {
 
       Rq rq = new Rq(cmd);
 
-      if (rq.getUrlPath().equals("/usr/article/write")) {
+      if (rq.getActionPath().equals("/usr/article/write")) {
         articleController.doWrite();
-      } else if (rq.getUrlPath().startsWith("/usr/article/detail/")) {
+      } else if (rq.getActionPath().equals("/usr/article/detail")) {
         articleController.showDetail(rq);
-      } else if (rq.getUrlPath().equals("/usr/article/list")) {
+      } else if (rq.getActionPath().equals("/usr/article/list")) {
         articleController.showList(rq);
-      } else if (rq.getUrlPath().startsWith("/usr/article/modify/")) {
+      } else if (rq.getActionPath().equals("/usr/article/modify")) {
         articleController.doModify(rq);
-      } else if (rq.getUrlPath().startsWith("/usr/article/delete/")) {
+      } else if (rq.getActionPath().equals("/usr/article/delete")) {
         articleController.doDelete(rq);
       } else if (cmd.equals("exit")) {
         break;

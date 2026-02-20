@@ -27,6 +27,18 @@ public class Rq {
     return urlPath;
   }
 
+  public String getActionPath() {
+    String[] bits = getUrlPathBits();
+    // /usr/article/detail/1
+    // ["", "usr", "article", "detail", "1"]
+    // /usr/article/list
+    // ["", "usr", "article", "list"]
+
+    if(bits.length <= 4) return urlPath;
+
+    return "/" + bits[1] + "/" + bits[2] + "/" + bits[3];
+  }
+
   public String[] getUrlPathBits() {
     return urlPath.split("/");
   }
