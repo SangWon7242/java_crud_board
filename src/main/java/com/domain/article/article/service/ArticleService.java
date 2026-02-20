@@ -12,7 +12,7 @@ public class ArticleService {
   private ArticleRepository articleRepository;
 
   public ArticleService() {
-    articleRepository = Container.articleRepository;
+    articleRepository = Container.getArticleRepository();
   }
 
   public List<Article> getArticles(String orderBy) {

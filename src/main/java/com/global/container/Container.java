@@ -3,15 +3,19 @@ package com.global.container;
 import com.domain.article.article.controller.ArticleController;
 import com.domain.article.article.repository.ArticleRepository;
 import com.domain.article.article.service.ArticleService;
+import lombok.Getter;
 
 import java.util.Scanner;
 
 public class Container {
-  public static Scanner sc;
-
-  public static ArticleRepository articleRepository;
-  public static ArticleService articleService;
-  public static ArticleController articleController;
+  @Getter
+  private static Scanner sc;
+  @Getter
+  private static ArticleRepository articleRepository;
+  @Getter
+  private static ArticleService articleService;
+  @Getter
+  private static ArticleController articleController;
 
   static {
     sc = new Scanner(System.in);

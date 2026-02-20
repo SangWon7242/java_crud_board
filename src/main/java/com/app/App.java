@@ -10,7 +10,7 @@ public class App {
   public ArticleController articleController;
 
   public App() {
-    articleController = Container.articleController;
+    articleController = Container.getArticleController();
   }
 
   public void run() {

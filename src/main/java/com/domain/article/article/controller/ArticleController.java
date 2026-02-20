@@ -12,16 +12,16 @@ public class ArticleController {
   private ArticleService articleService;
 
   public ArticleController() {
-    articleService = Container.articleService;
+    articleService = Container.getArticleService();
   }
 
   public void doWrite() {
     System.out.println("== 게시물 작성 ==");
     System.out.print("제목 : ");
-    String title = Container.sc.nextLine();
+    String title = Container.getSc().nextLine();
 
     System.out.print("내용 : ");
-    String content = Container.sc.nextLine();
+    String content = Container.getSc().nextLine();
 
     Article article = articleService.write(title, content);
 
@@ -85,10 +85,10 @@ public class ArticleController {
 
     System.out.printf("== %d번 게시물 수정 ==\n", article.getId());
     System.out.print("수정 할 제목 : ");
-    String title = Container.sc.nextLine();
+    String title = Container.getSc().nextLine();
 
     System.out.print("수정 할 내용 : ");
-    String content = Container.sc.nextLine();
+    String content = Container.getSc().nextLine();
 
     articleService.modify(id, title, content);
 
