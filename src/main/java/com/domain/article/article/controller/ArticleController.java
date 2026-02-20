@@ -5,6 +5,8 @@ import com.domain.article.article.Article;
 import com.domain.article.article.service.ArticleService;
 import com.global.rq.Rq;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class ArticleController {
   public void showDetail(Rq rq) {
     int id = rq.getIntParamFromUrlPath(4, 0);
 
-    if(id == 0) {
+    if (id == 0) {
       System.out.println("올바른 값을 입력해주세요.");
       return;
     }
@@ -50,7 +52,7 @@ public class ArticleController {
   }
 
   public void showList(Rq rq) {
-    Map<String, Object> params = rq.getParams();
+    Map<String, String> params = rq.getParams();
 
     List<Article> articles = articleService.getArticles();
 
@@ -59,28 +61,36 @@ public class ArticleController {
       return;
     }
 
-    boolean orderByIdAsc = params.containsKey("orderBy") && params.get("orderBy").equals("idAsc");
+    // 1. 파라미터 확인 (단순 존재 여부보다 '값' 자체를 가져옴)
+    String orderBy = params.getOrDefault("orderBy", "idDesc");
+
+    System.out.println("orderBy : " + orderBy);
+
+    // 원본을 기반으로한 복사본을 지닌다.
+    List<Article> sortedArticles = new ArrayList<>(articles);
 
     System.out.println("== 게시물 리스트 ==");
-
     System.out.println("번호 | 제목");
 
-    // 'orderBy' 라는 파라미터 이름이 존재하고, 해당 파리머타 값이 idAsc인지 판별
-    if(orderByIdAsc) {
-      articles.forEach(article -> System.out.printf("%d | %s\n", article.id, article.title));
+    // 2. 데이터 정렬 로직 (원본 데이터의 순서를 결정)
+    if (orderBy.equals("idDesc")) {
+      Collections.reverse(sortedArticles); // 내림차순: 리스트 뒤집기
+
+      sortedArticles.forEach(article ->
+          System.out.printf("%d | %s\n", article.id, article.title)
+      );
     }
     else {
-      for (int i = articles.size() - 1; i >= 0; i--) {
-        Article article = articles.get(i);
-        System.out.printf("%d | %s\n", article.id, article.title);
-      }
+      articles.forEach(article ->
+          System.out.printf("%d | %s\n", article.id, article.title)
+      );
     }
   }
 
   public void doModify(Rq rq) {
     int id = rq.getIntParamFromUrlPath(4, 0);
 
-    if(id == 0) {
+    if (id == 0) {
       System.out.println("올바른 값을 입력해주세요.");
       return;
     }
@@ -107,7 +117,7 @@ public class ArticleController {
   public void doDelete(Rq rq) {
     int id = rq.getIntParamFromUrlPath(4, 0);
 
-    if(id == 0) {
+    if (id == 0) {
       System.out.println("올바른 값을 입력해주세요.");
       return;
     }

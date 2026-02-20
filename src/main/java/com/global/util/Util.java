@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Util {
-  public static Map<String, Object> getParamsFromUrl(String url) {
-    Map<String, Object> params = new HashMap<>();
+  public static Map<String, String> getParamsFromUrl(String url) {
+    Map<String, String> params = new HashMap<>();
 
     String[] urlBits = url.split("\\?", 2);
 

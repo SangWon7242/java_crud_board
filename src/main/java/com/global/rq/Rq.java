@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Rq {
   private String url;
-  private Map<String, Object> params;
+  private Map<String, String> params;
   private String urlPath;
 
   public Rq(String url) {
@@ -19,7 +19,7 @@ public class Rq {
     return url;
   }
 
-  public Map<String, Object> getParams() {
+  public Map<String, String> getParams() {
     return params;
   }
 
