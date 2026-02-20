@@ -59,21 +59,15 @@ public class ArticleController {
       return;
     }
 
+    boolean orderByIdAsc = params.containsKey("orderBy") && params.get("orderBy").equals("idAsc");
+
     System.out.println("== 게시물 리스트 ==");
 
     System.out.println("번호 | 제목");
 
     // 'orderBy' 라는 파라미터 이름이 존재하고, 해당 파리머타 값이 idAsc인지 판별
-    if(params.containsKey("orderBy")) {
-      if(params.get("orderBy").equals("idAsc")) {
-        articles.forEach(article -> System.out.printf("%d | %s\n", article.id, article.title));
-      }
-      else if(params.get("orderBy").equals("idDesc")) {
-        for (int i = articles.size() - 1; i >= 0; i--) {
-          Article article = articles.get(i);
-          System.out.printf("%d | %s\n", article.id, article.title);
-        }
-      }
+    if(orderByIdAsc) {
+      articles.forEach(article -> System.out.printf("%d | %s\n", article.id, article.title));
     }
     else {
       for (int i = articles.size() - 1; i >= 0; i--) {
