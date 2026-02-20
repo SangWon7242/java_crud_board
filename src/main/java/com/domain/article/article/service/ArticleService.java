@@ -4,6 +4,8 @@ import com.global.container.Container;
 import com.domain.article.article.Article;
 import com.domain.article.article.repository.ArticleRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ArticleService {
@@ -13,8 +15,18 @@ public class ArticleService {
     articleRepository = Container.articleRepository;
   }
 
-  public List<Article> getArticles() {
-    return articleRepository.findAll();
+  public List<Article> getArticles(String orderBy) {
+    // articleRepository.findAll() 메서드를 통해 가져온 원본 리스트를 바탕으로 새로운 리스트 객체 생성
+    List<Article> articles = new ArrayList<>(articleRepository.findAll());
+
+    if("idAsc".equals(orderBy)) {
+      // Article 객체의 id 값을 기준으로 오름차순 정렬
+      articles.sort(Comparator.comparingInt(article -> article.id));
+    } else {
+      articles.sort(Comparator.comparingInt((Article article) -> article.id).reversed());
+    }
+    
+    return articles;
   }
 
   public Article write(String title, String content) {

@@ -53,38 +53,21 @@ public class ArticleController {
 
   public void showList(Rq rq) {
     Map<String, String> params = rq.getParams();
+    String orderBy = params.getOrDefault("orderBy", "idDesc");
 
-    List<Article> articles = articleService.getArticles();
+    List<Article> articles = articleService.getArticles(orderBy);
 
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
     }
 
-    // 1. 파라미터 확인 (단순 존재 여부보다 '값' 자체를 가져옴)
-    String orderBy = params.getOrDefault("orderBy", "idDesc");
-
-    System.out.println("orderBy : " + orderBy);
-
-    // 원본을 기반으로한 복사본을 지닌다.
-    List<Article> sortedArticles = new ArrayList<>(articles);
-
     System.out.println("== 게시물 리스트 ==");
     System.out.println("번호 | 제목");
 
-    // 2. 데이터 정렬 로직 (원본 데이터의 순서를 결정)
-    if (orderBy.equals("idDesc")) {
-      Collections.reverse(sortedArticles); // 내림차순: 리스트 뒤집기
-
-      sortedArticles.forEach(article ->
-          System.out.printf("%d | %s\n", article.id, article.title)
-      );
-    }
-    else {
-      articles.forEach(article ->
-          System.out.printf("%d | %s\n", article.id, article.title)
-      );
-    }
+    articles.forEach(article ->
+        System.out.printf("%d | %s\n", article.id, article.title)
+    );
   }
 
   public void doModify(Rq rq) {
