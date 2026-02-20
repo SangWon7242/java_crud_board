@@ -6,6 +6,7 @@ import com.domain.article.article.service.ArticleService;
 import com.global.rq.Rq;
 
 import java.util.List;
+import java.util.Map;
 
 public class ArticleController {
   private ArticleService articleService;
@@ -49,6 +50,8 @@ public class ArticleController {
   }
 
   public void showList(Rq rq) {
+    Map<String, Object> params = rq.getParams();
+
     List<Article> articles = articleService.getArticles();
 
     if (articles.isEmpty()) {
@@ -60,9 +63,23 @@ public class ArticleController {
 
     System.out.println("번호 | 제목");
 
-    for (int i = articles.size() - 1; i >= 0; i--) {
-      Article article = articles.get(i);
-      System.out.printf("%d | %s\n", article.id, article.title);
+    // 'orderBy' 라는 파라미터 이름이 존재하고, 해당 파리머타 값이 idAsc인지 판별
+    if(params.containsKey("orderBy")) {
+      if(params.get("orderBy").equals("idAsc")) {
+        articles.forEach(article -> System.out.printf("%d | %s\n", article.id, article.title));
+      }
+      else if(params.get("orderBy").equals("idDesc")) {
+        for (int i = articles.size() - 1; i >= 0; i--) {
+          Article article = articles.get(i);
+          System.out.printf("%d | %s\n", article.id, article.title);
+        }
+      }
+    }
+    else {
+      for (int i = articles.size() - 1; i >= 0; i--) {
+        Article article = articles.get(i);
+        System.out.printf("%d | %s\n", article.id, article.title);
+      }
     }
   }
 
