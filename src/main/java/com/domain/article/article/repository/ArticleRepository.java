@@ -1,6 +1,6 @@
 package com.domain.article.article.repository;
 
-import com.domain.article.article.Article;
+import com.domain.article.article.dto.Article;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class ArticleRepository {
 
     makeArticleTestData();
 
-    lastArticleId = articles.get(articles.size() - 1).id;
+    lastArticleId = articles.get(articles.size() - 1).getId();
   }
 
   void makeArticleTestData() {
@@ -36,8 +36,8 @@ public class ArticleRepository {
 
   public void modify(int id, String title, String content) {
     Article article = findById(id);
-    article.title = title;
-    article.content = content;
+    article.setTitle(title);
+    article.setContent(content);
   }
 
   public void delete(int id) {
@@ -47,7 +47,7 @@ public class ArticleRepository {
 
   public Article findById(int id) {
     return articles.stream()
-        .filter(article -> article.id == id)
+        .filter(article -> article.getId() == id)
         .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
         .orElse(null); // 못 찾은 경우에는 null을 넣어라
   }

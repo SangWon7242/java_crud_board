@@ -1,7 +1,7 @@
 package com.domain.article.article.service;
 
 import com.global.container.Container;
-import com.domain.article.article.Article;
+import com.domain.article.article.dto.Article;
 import com.domain.article.article.repository.ArticleRepository;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ public class ArticleService {
 
     if("idAsc".equals(orderBy)) {
       // Article 객체의 id 값을 기준으로 오름차순 정렬
-      articles.sort(Comparator.comparingInt(article -> article.id));
+      articles.sort(Comparator.comparingInt(Article::getId));
     } else {
-      articles.sort(Comparator.comparingInt((Article article) -> article.id).reversed());
+      articles.sort(Comparator.comparingInt(Article::getId).reversed());
     }
     
     return articles;

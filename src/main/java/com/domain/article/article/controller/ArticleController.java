@@ -1,12 +1,10 @@
 package com.domain.article.article.controller;
 
 import com.global.container.Container;
-import com.domain.article.article.Article;
+import com.domain.article.article.dto.Article;
 import com.domain.article.article.service.ArticleService;
 import com.global.rq.Rq;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +25,7 @@ public class ArticleController {
 
     Article article = articleService.write(title, content);
 
-    System.out.printf("%d번 게시물이 작성되었습니다.\n", article.id);
+    System.out.printf("%d번 게시물이 작성되었습니다.\n", article.getId());
   }
 
   public void showDetail(Rq rq) {
@@ -45,10 +43,10 @@ public class ArticleController {
       return;
     }
 
-    System.out.printf("== %d번 게시물 상세보기 ==\n", article.id);
-    System.out.printf("번호 : %d\n", article.id);
-    System.out.printf("제목 : %s\n", article.title);
-    System.out.printf("내용 : %s\n", article.content);
+    System.out.printf("== %d번 게시물 상세보기 ==\n", article.getId());
+    System.out.printf("번호 : %d\n", article.getId());
+    System.out.printf("제목 : %s\n", article.getTitle());
+    System.out.printf("내용 : %s\n", article.getContent());
   }
 
   public void showList(Rq rq) {
@@ -66,7 +64,7 @@ public class ArticleController {
     System.out.println("번호 | 제목");
 
     articles.forEach(article ->
-        System.out.printf("%d | %s\n", article.id, article.title)
+        System.out.printf("%d | %s\n", article.getId(), article.getTitle())
     );
   }
 
@@ -85,7 +83,7 @@ public class ArticleController {
       return;
     }
 
-    System.out.printf("== %d번 게시물 수정 ==\n", article.id);
+    System.out.printf("== %d번 게시물 수정 ==\n", article.getId());
     System.out.print("수정 할 제목 : ");
     String title = Container.sc.nextLine();
 
