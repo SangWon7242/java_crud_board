@@ -50,8 +50,7 @@ public class ArticleController {
   }
 
   public void showList(Rq rq) {
-    Map<String, String> params = rq.getParams();
-    String orderBy = params.getOrDefault("orderBy", "idDesc");
+    String orderBy = rq.getParam("orderBy", "idDesc");
 
     List<Article> articles = articleService.getArticles(orderBy);
 

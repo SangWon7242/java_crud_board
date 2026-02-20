@@ -54,4 +54,10 @@ public class Rq {
       return defaultValue;
     }
   }
+
+  public String getParam(String paramName, String defaultValue) {
+    if(!params.containsKey(paramName)) return defaultValue;
+
+    return params.get(paramName);
+  }
 }
