@@ -1,5 +1,6 @@
 package com.app;
 
+import com.domain.member.controller.MemberController;
 import com.global.container.Container;
 import com.domain.article.article.controller.ArticleController;
 import com.global.rq.Rq;
@@ -7,9 +8,11 @@ import com.global.rq.Rq;
 import java.util.Scanner;
 
 public class App {
+  public MemberController memberController;
   public ArticleController articleController;
 
   public App() {
+    memberController = Container.getMemberController();
     articleController = Container.getArticleController();
   }
 
@@ -34,6 +37,8 @@ public class App {
         articleController.doModify(rq);
       } else if (rq.getActionPath().equals("/usr/article/delete")) {
         articleController.doDelete(rq);
+      } else if (rq.getActionPath().equals("/usr/member/join")) {
+        memberController.doJoin(rq);
       } else if (cmd.equals("exit")) {
         break;
       } else {
