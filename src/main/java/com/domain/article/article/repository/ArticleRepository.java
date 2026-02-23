@@ -25,13 +25,21 @@ public class ArticleRepository {
         .forEach(i -> save("제목" + i, "내용" + i));
   }
 
-  private List<Article> findByTitleContainingOrContentContaining(String keyword) {
+  private List<Article> filteredArticles(String typeCode, String keyword) {
     List<Article> searchResults = findAll();
 
     if(!keyword.isEmpty()) {
-      searchResults = articles.stream()
-          .filter(article -> article.getTitle().contains(keyword) || article.getContent().contains(keyword))
-          .collect(Collectors.toList());
+      searchResults = switch (typeCode) {
+        case "title" -> articles.stream()
+            .filter(article -> article.getTitle().contains(keyword))
+            .collect(Collectors.toList());
+        case "content" -> articles.stream()
+            .filter(article -> article.getContent().contains(keyword))
+            .collect(Collectors.toList());
+        default -> articles.stream()
+            .filter(article -> article.getTitle().contains(keyword) || article.getContent().contains(keyword))
+            .collect(Collectors.toList());
+      };
     }
 
     return searchResults;
@@ -55,9 +63,9 @@ public class ArticleRepository {
     return sortedArticles;
   }
 
-  public List<Article> findAll(String orderBy, String searchKeyword) {
+  public List<Article> findAll(String orderBy, String typeCode, String keyword) {
     // 검색 수행
-    List<Article> searchResults = findByTitleContainingOrContentContaining(searchKeyword);
+    List<Article> searchResults = filteredArticles(typeCode, keyword);
     
     // 정렬 수행
     return sortedArticles(searchResults, orderBy);

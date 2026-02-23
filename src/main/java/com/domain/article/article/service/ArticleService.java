@@ -4,10 +4,7 @@ import com.global.container.Container;
 import com.domain.article.article.dto.Article;
 import com.domain.article.article.repository.ArticleRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ArticleService {
   private ArticleRepository articleRepository;
@@ -16,8 +13,8 @@ public class ArticleService {
     articleRepository = Container.getArticleRepository();
   }
 
-  public List<Article> getArticles(String orderBy, String searchKeyword) {
-    return articleRepository.findAll(orderBy, searchKeyword);
+  public List<Article> getArticles(String orderBy, String typeCode, String keyword) {
+    return articleRepository.findAll(orderBy, typeCode, keyword);
   }
 
   public Article write(String title, String content) {

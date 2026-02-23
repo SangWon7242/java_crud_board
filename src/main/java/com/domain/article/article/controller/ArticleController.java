@@ -51,9 +51,10 @@ public class ArticleController {
 
   public void showList(Rq rq) {
     String orderBy = rq.getParam("orderBy", "idDesc");
+    String keywordTypeCode = rq.getParam("keywordTypeCode", "all");
     String searchKeyword = rq.getParam("searchKeyword", "");
 
-    List<Article> articles = articleService.getArticles(orderBy, searchKeyword);
+    List<Article> articles = articleService.getArticles(orderBy, keywordTypeCode, searchKeyword);
 
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
