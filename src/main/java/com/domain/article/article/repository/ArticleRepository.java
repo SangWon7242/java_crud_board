@@ -19,7 +19,7 @@ public class ArticleRepository {
   }
 
   void makeArticleTestData() {
-    IntStream.rangeClosed(1, 3)
+    IntStream.rangeClosed(1, 100)
         .forEach(i -> save("제목" + i, "내용" + i));
   }
 
