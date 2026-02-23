@@ -3,7 +3,9 @@ package com.domain.article.article.repository;
 import com.domain.article.article.dto.Article;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ArticleRepository {
@@ -23,8 +25,42 @@ public class ArticleRepository {
         .forEach(i -> save("제목" + i, "내용" + i));
   }
 
+  private List<Article> findByTitleContainingOrContentContaining(String keyword) {
+    List<Article> searchResults = findAll();
+
+    if(!keyword.isEmpty()) {
+      searchResults = articles.stream()
+          .filter(article -> article.getTitle().contains(keyword) || article.getContent().contains(keyword))
+          .collect(Collectors.toList());
+    }
+
+    return searchResults;
+  }
+
   public List<Article> findAll() {
     return articles;
+  }
+
+  private List<Article> sortedArticles(List<Article> articles, String orderBy) {
+    List<Article> sortedArticles = new ArrayList<>(articles);
+
+    // 정렬 로직
+    if("idAsc".equals(orderBy)) {
+      // Article 객체의 id 값을 기준으로 오름차순 정렬
+      sortedArticles.sort(Comparator.comparingInt(Article::getId));
+    } else {
+      sortedArticles.sort(Comparator.comparingInt(Article::getId).reversed());
+    }
+
+    return sortedArticles;
+  }
+
+  public List<Article> findAll(String orderBy, String searchKeyword) {
+    // 검색 수행
+    List<Article> searchResults = findByTitleContainingOrContentContaining(searchKeyword);
+    
+    // 정렬 수행
+    return sortedArticles(searchResults, orderBy);
   }
 
   public Article save(String title, String content) {
