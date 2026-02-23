@@ -7,6 +7,7 @@ import com.domain.article.article.repository.ArticleRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArticleService {
   private ArticleRepository articleRepository;
@@ -15,18 +16,25 @@ public class ArticleService {
     articleRepository = Container.getArticleRepository();
   }
 
-  public List<Article> getArticles(String orderBy) {
+  public List<Article> getArticles(String orderBy, String searchKeyword) {
     // articleRepository.findAll() 메서드를 통해 가져온 원본 리스트를 바탕으로 새로운 리스트 객체 생성
     List<Article> articles = new ArrayList<>(articleRepository.findAll());
 
+    List<Article> searchResults = articles;
+    if(!searchKeyword.isEmpty()) {
+      searchResults = articles.stream()
+          .filter(article -> article.getTitle().contains(searchKeyword) || article.getContent().contains(searchKeyword))
+          .collect(Collectors.toList());
+    }
+
     if("idAsc".equals(orderBy)) {
       // Article 객체의 id 값을 기준으로 오름차순 정렬
-      articles.sort(Comparator.comparingInt(Article::getId));
+      searchResults.sort(Comparator.comparingInt(Article::getId));
     } else {
-      articles.sort(Comparator.comparingInt(Article::getId).reversed());
+      searchResults.sort(Comparator.comparingInt(Article::getId).reversed());
     }
     
-    return articles;
+    return searchResults;
   }
 
   public Article write(String title, String content) {
