@@ -39,7 +39,9 @@ public class App {
         articleController.doDelete(rq);
       } else if (rq.getActionPath().equals("/usr/member/join")) {
         memberController.doJoin(rq);
-      } else if (cmd.equals("exit")) {
+      } else if (rq.getActionPath().equals("/usr/member/login")) {
+        memberController.doLogin(rq);
+      }  else if (cmd.equals("exit")) {
         break;
       } else {
         System.out.println("명령어 확인 후 다시 입력해주세요.");
