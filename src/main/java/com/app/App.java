@@ -3,18 +3,12 @@ package com.app;
 import com.domain.member.controller.MemberController;
 import com.global.container.Container;
 import com.domain.article.article.controller.ArticleController;
+import com.global.controller.Controller;
 import com.global.rq.Rq;
 
 import java.util.Scanner;
 
 public class App {
-  public MemberController memberController;
-  public ArticleController articleController;
-
-  public App() {
-    memberController = Container.getMemberController();
-    articleController = Container.getArticleController();
-  }
 
   public void run() {
     Scanner sc = new Scanner(System.in);
@@ -28,22 +22,12 @@ public class App {
 
       Rq rq = new Rq(cmd);
 
-      if (rq.getActionPath().equals("/usr/article/write")) {
-        articleController.doWrite();
-      } else if (rq.getActionPath().equals("/usr/article/detail")) {
-        articleController.showDetail(rq);
-      } else if (rq.getActionPath().equals("/usr/article/list")) {
-        articleController.showList(rq);
-      } else if (rq.getActionPath().equals("/usr/article/modify")) {
-        articleController.doModify(rq);
-      } else if (rq.getActionPath().equals("/usr/article/delete")) {
-        articleController.doDelete(rq);
-      } else if (rq.getActionPath().equals("/usr/member/join")) {
-        memberController.doJoin(rq);
-      } else if (rq.getActionPath().equals("/usr/member/login")) {
-        memberController.doLogin(rq);
-      } else if (rq.getActionPath().equals("/usr/member/logout")) {
-        memberController.doLogout(rq);
+      rq.getActionPath();
+
+      Controller controller = getControllerByRequestUri(rq);
+
+      if (controller != null) {
+        controller.performAction(rq);
       } else if (cmd.equals("exit")) {
         break;
       } else {
@@ -54,5 +38,20 @@ public class App {
     System.out.println("== 자바 게시판 종료 ==");
 
     sc.close();
+  }
+
+  private Controller getControllerByRequestUri(Rq rq) {
+    switch (rq.getControllerTypeCode()) {
+      case "usr":
+        switch (rq.getControllerName()) {
+          case "member":
+            return Container.getMemberController();
+          case "article":
+            return Container.getArticleController();
+        }
+        break;
+    }
+
+    return null;
   }
 }

@@ -3,15 +3,29 @@ package com.global.rq;
 import com.global.container.Container;
 import com.global.session.Session;
 import com.global.util.Util;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
 public class Rq {
   private String url;
+  @Getter
   private Map<String, String> params;
+  @Getter
   private String urlPath;
   private Session session;
   private String loginedMemberId;
+
+  @Getter
+  @Setter
+  String controllerTypeCode;
+  @Getter
+  @Setter
+  String controllerName;
+  @Getter
+  @Setter
+  String actionMethodName;
 
   public Rq(String url) {
     this.url = url;
@@ -25,24 +39,16 @@ public class Rq {
     return url;
   }
 
-  public Map<String, String> getParams() {
-    return params;
-  }
-
-  public String getUrlPath() {
-    return urlPath;
-  }
-
   public String getActionPath() {
     String[] bits = getUrlPathBits();
-    // /usr/article/detail/1
-    // ["", "usr", "article", "detail", "1"]
-    // /usr/article/list
-    // ["", "usr", "article", "list"]
 
-    if(bits.length <= 4) return urlPath;
+    if (bits.length < 4) return urlPath;
 
-    return "/" + bits[1] + "/" + bits[2] + "/" + bits[3];
+    controllerTypeCode = bits[1];
+    controllerName = bits[2];
+    actionMethodName = bits[3];
+
+    return "/%s/%s/%s".formatted(controllerTypeCode, controllerName, actionMethodName);
   }
 
   public String[] getUrlPathBits() {
@@ -52,7 +58,7 @@ public class Rq {
   public int getIntParamFromUrlPath(int index, int defaultValue) {
     String[] bits = getUrlPathBits();
 
-    if(index < 0 || index >= bits.length) return defaultValue;
+    if (index < 0 || index >= bits.length) return defaultValue;
 
     try {
       return Integer.parseInt(bits[index]);
@@ -62,7 +68,7 @@ public class Rq {
   }
 
   public String getParam(String paramName, String defaultValue) {
-    if(!params.containsKey(paramName)) return defaultValue;
+    if (!params.containsKey(paramName)) return defaultValue;
 
     return params.get(paramName);
   }

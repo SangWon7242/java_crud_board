@@ -3,16 +3,32 @@ package com.domain.article.article.controller;
 import com.global.container.Container;
 import com.domain.article.article.dto.Article;
 import com.domain.article.article.service.ArticleService;
+import com.global.controller.Controller;
 import com.global.rq.Rq;
 
 import java.util.List;
 import java.util.Map;
 
-public class ArticleController {
+public class ArticleController implements Controller {
   private ArticleService articleService;
 
   public ArticleController() {
     articleService = Container.getArticleService();
+  }
+
+  @Override
+  public void performAction(Rq rq) {
+    if (rq.getActionMethodName().equals("write")) {
+      doWrite();
+    } else if (rq.getActionMethodName().equals("detail")) {
+      showDetail(rq);
+    } else if (rq.getActionMethodName().equals("list")) {
+      showList(rq);
+    } else if (rq.getActionMethodName().equals("modify")) {
+      showList(rq);
+    } else if (rq.getActionMethodName().equals("delete")) {
+      showList(rq);
+    }
   }
 
   public void doWrite() {
