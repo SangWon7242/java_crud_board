@@ -27,16 +27,15 @@ public class Rq {
   @Setter
   String actionMethodName;
 
-  public Rq(String url) {
-    this.url = url;
-    this.params = Util.getParamsFromUrl(this.url);
-    this.urlPath = Util.getPathFromUrl(this.url);
+  public Rq() {
     this.session = Container.getSession();
     this.loginedMemberId = "loginedMemberId";
   }
 
-  public String getCmd() {
-    return url;
+  public void setCommand(String url) {
+    this.url = url;
+    this.params = Util.getParamsFromUrl(this.url);
+    this.urlPath = Util.getPathFromUrl(this.url);
   }
 
   public String getActionPath() {
@@ -109,4 +108,5 @@ public class Rq {
   public void removeAttr(String key) {
     session.removeAttribute(key);
   }
+
 }

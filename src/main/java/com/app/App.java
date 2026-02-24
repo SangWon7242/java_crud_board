@@ -1,6 +1,7 @@
 package com.app;
 
 import com.domain.member.controller.MemberController;
+import com.domain.member.dto.Member;
 import com.global.container.Container;
 import com.domain.article.article.controller.ArticleController;
 import com.global.controller.Controller;
@@ -17,10 +18,24 @@ public class App {
 
     while (true) {
 
-      System.out.print("명령) ");
+      Rq rq = new Rq();
+
+      String promptName = "명령";
+
+      Member loginedMember = null;
+      if (rq.isLogined()) {
+        int memberId = Integer.parseInt(rq.getAttr("loginedMemberId"));
+        loginedMember = Container.getMemberService().findById(memberId);
+      }
+
+      if (loginedMember != null) {
+        promptName = loginedMember.getUsername();
+      }
+
+      System.out.printf("%s) ", promptName);
       String cmd = sc.nextLine();
 
-      Rq rq = new Rq(cmd);
+      rq.setCommand(cmd);
 
       rq.getActionPath();
 
