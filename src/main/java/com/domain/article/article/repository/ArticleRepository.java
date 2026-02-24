@@ -10,17 +10,14 @@ import java.util.stream.IntStream;
 
 public class ArticleRepository {
   public List<Article> articles;
-  public int lastArticleId;
 
   public ArticleRepository() {
     articles = new ArrayList<>();
 
-    makeArticleTestData();
-
-    lastArticleId = articles.get(articles.size() - 1).getId();
+    testData();
   }
 
-  void makeArticleTestData() {
+  void testData() {
     IntStream.rangeClosed(1, 100)
         .forEach(i -> save("제목" + i, "내용" + i));
   }
