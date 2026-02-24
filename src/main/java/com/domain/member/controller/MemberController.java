@@ -30,6 +30,13 @@ public class MemberController {
         continue;
       }
 
+      Member member = memberService.findByUsername(username);
+
+      if(member != null) {
+        System.out.println("이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.");
+        continue;
+      }
+
       break;
     }
 
