@@ -1,5 +1,7 @@
 package com.global.rq;
 
+import com.global.container.Container;
+import com.global.session.Session;
 import com.global.util.Util;
 
 import java.util.Map;
@@ -8,11 +10,13 @@ public class Rq {
   private String url;
   private Map<String, String> params;
   private String urlPath;
+  private Session session;
 
   public Rq(String url) {
     this.url = url;
     this.params = Util.getParamsFromUrl(this.url);
     this.urlPath = Util.getPathFromUrl(this.url);
+    this.session = Container.getSession();
   }
 
   public String getCmd() {
@@ -59,5 +63,21 @@ public class Rq {
     if(!params.containsKey(paramName)) return defaultValue;
 
     return params.get(paramName);
+  }
+
+  public void setAttr(String key, String value) {
+    session.setAttribute(key, value);
+  }
+
+  public String getAttr(String key) {
+    return session.getAttribute(key);
+  }
+
+  public boolean hasAttr(String key) {
+    return session.hasAttribute(key);
+  }
+
+  public void removeAttr(String key) {
+    session.removeAttribute(key);
   }
 }
