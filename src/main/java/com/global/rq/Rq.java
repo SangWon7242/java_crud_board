@@ -11,12 +11,14 @@ public class Rq {
   private Map<String, String> params;
   private String urlPath;
   private Session session;
+  private String loginedMemberId;
 
   public Rq(String url) {
     this.url = url;
     this.params = Util.getParamsFromUrl(this.url);
     this.urlPath = Util.getPathFromUrl(this.url);
     this.session = Container.getSession();
+    this.loginedMemberId = "loginedMemberId";
   }
 
   public String getCmd() {
@@ -63,6 +65,27 @@ public class Rq {
     if(!params.containsKey(paramName)) return defaultValue;
 
     return params.get(paramName);
+  }
+
+  public void login(String value) {
+    setAttr(loginedMemberId, value);
+  }
+
+  public void logout() {
+    removeAttr(loginedMemberId);
+  }
+
+  // 로그인 여부 확인
+  public boolean isLogined() {
+    return hasAttr(loginedMemberId);
+  }
+
+  public boolean isNotLogined() {
+    return !isLogined();
+  }
+
+  public String getLoginedMemberId() {
+    return getAttr(loginedMemberId);
   }
 
   public void setAttr(String key, String value) {

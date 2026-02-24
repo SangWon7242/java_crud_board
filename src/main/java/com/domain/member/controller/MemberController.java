@@ -87,7 +87,7 @@ public class MemberController {
   }
 
   public void doLogin(Rq rq) {
-    if(rq.hasAttr("loginedMemberId")) {
+    if(rq.isLogined()) {
       System.out.println("이미 로그인 되어있습니다.");
       return;
     }
@@ -145,19 +145,19 @@ public class MemberController {
       break;
     }
 
-    String loginedMemberId = member.getId() + "";
-    rq.setAttr("loginedMemberId", loginedMemberId);
+    String memberId = member.getId() + "";
+    rq.login(memberId);
 
     System.out.printf("'%s' 님 환영합니다.\n", member.getName());
   }
 
   public void doLogout(Rq rq) {
-    if(!rq.hasAttr("loginedMemberId")) {
+    if(rq.isNotLogined()) {
       System.out.println("로그인 되어있지 않습니다.");
       return;
     }
 
-    rq.removeAttr("loginedMemberId");
+    rq.logout();
     System.out.println("로그아웃 되었습니다.");
   }
 }

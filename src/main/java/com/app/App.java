@@ -22,6 +22,7 @@ public class App {
     System.out.println("== 자바 게시판 시작 ==");
 
     while (true) {
+
       System.out.print("명령) ");
       String cmd = sc.nextLine();
 
