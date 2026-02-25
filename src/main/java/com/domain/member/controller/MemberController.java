@@ -24,6 +24,8 @@ public class MemberController implements Controller {
       doLogout(rq);
     } else if (rq.getActionMethodName().equals("mypage")) {
       showMyPage(rq);
+    } else if (rq.getActionMethodName().equals("findByLoginId")) {
+      doFindByLoginId(rq);
     }
   }
 
@@ -116,7 +118,7 @@ public class MemberController implements Controller {
 
       member = memberService.findByEmail(email);
 
-      if(member != null) {
+      if (member != null) {
         System.out.println("이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요.");
         continue;
       }
@@ -201,5 +203,57 @@ public class MemberController implements Controller {
     System.out.printf("아이디 : %s\n", member.getUsername());
     System.out.printf("이름 : %s\n", member.getName());
     System.out.printf("이메일 : %s\n", member.getEmail());
+  }
+
+  private void doFindByLoginId(Rq rq) {
+    String email;
+    String name;
+    Member member;
+
+    System.out.println("== 아이디 찾기 ==");
+
+    // 이름 입력
+    while (true) {
+      System.out.print("이름 : ");
+      name = Container.getSc().nextLine();
+
+      if (name.trim().isEmpty()) {
+        System.out.println("이름 입력해주세요.");
+        continue;
+      }
+
+      break;
+    }
+
+    while (true) {
+      System.out.print("회원 가입시 입력한 이메일 : ");
+      email = Container.getSc().nextLine();
+
+      if (email.trim().isEmpty()) {
+        System.out.println("이메일 입력해주세요.");
+        continue;
+      }
+
+      if (!Util.isValidEmail(email)) {
+        System.out.println("유효하지 않은 이메일 형식입니다. 다시 입력해주세요.");
+        continue;
+      }
+
+      member = memberService.findByEmail(email);
+
+      if (member == null) {
+        System.out.println("존재하지 않는 이메일입니다. 다시 입력해주세요.");
+        continue;
+      }
+
+      if (!member.getName().equals(name)) {
+        System.out.println("입력하신 정보와 일치하는 회원 정보를 찾을 수 없습니다. 다시 확인해 주세요.");
+        continue;
+      }
+
+      break;
+    }
+
+    System.out.printf("가입시 입력 한 아이디 : %s\n", member.getUsername());
   }
 }
