@@ -64,7 +64,7 @@ public class ArticleController implements Controller {
     System.out.printf("번호 : %d\n", article.getId());
     System.out.printf("제목 : %s\n", article.getTitle());
     System.out.printf("내용 : %s\n", article.getContent());
-    System.out.printf("작성자 번호 : %d\n", article.getMemberId());
+    System.out.printf("작성자 : %s\n", article.getWriterName());
   }
 
   public void showList(Rq rq) {
@@ -80,10 +80,10 @@ public class ArticleController implements Controller {
     }
 
     System.out.println("== 게시물 리스트 ==");
-    System.out.println("번호 | 제목 | 작성자 번호");
+    System.out.println("번호 | 제목 | 작성자");
 
     articles.forEach(article ->
-        System.out.printf("%d | %s | %d\n", article.getId(), article.getTitle(), article.getMemberId())
+        System.out.printf("%d | %s | %s\n", article.getId(), article.getTitle(), article.getWriterName())
     );
   }
 

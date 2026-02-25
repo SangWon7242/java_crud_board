@@ -1,6 +1,8 @@
 package com.domain.article.article.repository;
 
 import com.domain.article.article.dto.Article;
+import com.domain.member.dto.Member;
+import com.global.container.Container;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -72,7 +74,9 @@ public class ArticleRepository {
   }
 
   public Article save(String title, String content, int memberId) {
-    Article article = new Article(title, content, memberId);
+    Member member = Container.getMemberRepository().findById(memberId);
+
+    Article article = new Article(title, content, memberId, member.getName());
     articles.add(article);
 
     return article;
