@@ -25,9 +25,9 @@ public class ArticleController implements Controller {
     } else if (rq.getActionMethodName().equals("list")) {
       showList(rq);
     } else if (rq.getActionMethodName().equals("modify")) {
-      showList(rq);
+      doModify(rq);
     } else if (rq.getActionMethodName().equals("delete")) {
-      showList(rq);
+      doDelete(rq);
     }
   }
 
@@ -95,10 +95,16 @@ public class ArticleController implements Controller {
       return;
     }
 
+    Member member = rq.getLoginedMember();
     Article article = articleService.findById(id);
 
     if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    if(article.getMemberId() != member.getId()) {
+      System.out.println("권한이 없습니다.");
       return;
     }
 
@@ -122,10 +128,16 @@ public class ArticleController implements Controller {
       return;
     }
 
+    Member member = rq.getLoginedMember();
     Article article = articleService.findById(id);
 
     if (article == null) {
       System.out.printf("%d번 게시물이 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    if(article.getMemberId() != member.getId()) {
+      System.out.println("권한이 없습니다.");
       return;
     }
 
