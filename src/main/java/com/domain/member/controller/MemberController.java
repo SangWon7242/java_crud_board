@@ -99,11 +99,6 @@ public class MemberController implements Controller {
   }
 
   public void doLogin(Rq rq) {
-    if (rq.isLogined()) {
-      System.out.println("이미 로그인 되어있습니다.");
-      return;
-    }
-
     String username;
     String password;
     Member member;
@@ -164,11 +159,6 @@ public class MemberController implements Controller {
   }
 
   public void doLogout(Rq rq) {
-    if (rq.isNotLogined()) {
-      System.out.println("로그인 되어있지 않습니다.");
-      return;
-    }
-
     rq.logout();
     System.out.println("로그아웃 되었습니다.");
   }

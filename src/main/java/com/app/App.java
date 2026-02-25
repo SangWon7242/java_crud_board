@@ -1,12 +1,13 @@
 package com.app;
 
-import com.domain.member.controller.MemberController;
 import com.domain.member.dto.Member;
 import com.global.container.Container;
-import com.domain.article.article.controller.ArticleController;
 import com.global.controller.Controller;
+import com.global.interceptor.Interceptor;
 import com.global.rq.Rq;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -36,8 +37,9 @@ public class App {
       String cmd = sc.nextLine();
 
       rq.setCommand(cmd);
-
       rq.getActionPath();
+
+      if(!runInterceptor(rq)) continue;
 
       Controller controller = getControllerByRequestUri(rq);
 
@@ -68,5 +70,20 @@ public class App {
     }
 
     return null;
+  }
+
+  private boolean runInterceptor(Rq rq) {
+    List<Interceptor> interceptors = new ArrayList<>();
+
+    interceptors.add(Container.getNeedLoginInterceptor());
+    interceptors.add(Container.getNeedLogoutInterceptor());
+
+    for (Interceptor interceptor : interceptors) {
+      if (!interceptor.run(rq)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
