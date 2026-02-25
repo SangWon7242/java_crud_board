@@ -22,6 +22,8 @@ public class MemberController implements Controller {
       doLogin(rq);
     } else if (rq.getActionMethodName().equals("logout")) {
       doLogout(rq);
+    } else if (rq.getActionMethodName().equals("mypage")) {
+      showMyPage(rq);
     }
   }
 
@@ -190,5 +192,14 @@ public class MemberController implements Controller {
   public void doLogout(Rq rq) {
     rq.logout();
     System.out.println("로그아웃 되었습니다.");
+  }
+
+  private void showMyPage(Rq rq) {
+    Member member = rq.getLoginedMember();
+
+    System.out.println("== 내 정보 ==");
+    System.out.printf("아이디 : %s\n", member.getUsername());
+    System.out.printf("이름 : %s\n", member.getName());
+    System.out.printf("이메일 : %s\n", member.getEmail());
   }
 }
