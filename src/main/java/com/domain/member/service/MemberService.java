@@ -11,8 +11,8 @@ public class MemberService {
     memberRepository = Container.getMemberRepository();
   }
 
-  public Member join(String username, String password, String name) {
-    return memberRepository.save(username, password, name);
+  public Member join(String username, String password, String name, String email) {
+    return memberRepository.save(username, password, name, email);
   }
 
   public Member findByUsername(String username) {
@@ -21,5 +21,9 @@ public class MemberService {
 
   public Member findById(int id) {
     return memberRepository.findById(id);
+  }
+
+  public Member findByEmail(String email) {
+    return memberRepository.findByEmail(email);
   }
 }

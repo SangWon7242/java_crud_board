@@ -5,6 +5,7 @@ import com.domain.member.service.MemberService;
 import com.global.container.Container;
 import com.global.controller.Controller;
 import com.global.rq.Rq;
+import com.global.util.Util;
 
 public class MemberController implements Controller {
   private MemberService memberService;
@@ -29,6 +30,8 @@ public class MemberController implements Controller {
     String password;
     String passwordConfirm;
     String name;
+    String email;
+    Member member;
 
     System.out.println("== 회원 가입 ==");
 
@@ -42,7 +45,7 @@ public class MemberController implements Controller {
         continue;
       }
 
-      Member member = memberService.findByUsername(username);
+      member = memberService.findByUsername(username);
 
       if (member != null) {
         System.out.println("이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.");
@@ -94,7 +97,33 @@ public class MemberController implements Controller {
       break;
     }
 
-    Member member = memberService.join(username, password, name);
+    // 이메일 입력
+    while (true) {
+      System.out.print("이메일 : ");
+      email = Container.getSc().nextLine();
+
+      if (email.trim().isEmpty()) {
+        System.out.println("이메일 입력해주세요.");
+        continue;
+      }
+
+      if (!Util.isValidEmail(email)) {
+        System.out.println("유효하지 않은 이메일 형식입니다. 다시 입력해주세요.");
+        continue;
+      }
+
+      member = memberService.findByEmail(email);
+
+      if(member != null) {
+        System.out.println("이미 존재하는 이메일입니다. 다른 이메일을 입력해주세요.");
+        continue;
+      }
+
+      break;
+    }
+
+    member = memberService.join(username, password, name, email);
+
     System.out.printf("'%s'님 회원 가입되었습니다.\n", member.getName());
   }
 

@@ -13,12 +13,13 @@ public class Member {
   private String username;
   private String password;
   private String name;
+  private String email;
 
   static {
     lastId = 0;
   }
 
-  public Member(String username, String password, String name) {
-    this(++lastId, username, password, name);
+  public Member(String username, String password, String name, String email) {
+    this(++lastId, username, password, name, email);
   }
 }

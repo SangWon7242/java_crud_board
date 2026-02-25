@@ -27,4 +27,8 @@ public class Util {
   public static String getPathFromUrl(String url) {
     return url.split("\\?", 2)[0];
   }
+
+  public static boolean isValidEmail(String email) {
+    return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+  }
 }
