@@ -23,14 +23,10 @@ public class App {
 
       String promptName = "명령";
 
-      Member loginedMember = null;
-      if (rq.isLogined()) {
-        int memberId = Integer.parseInt(rq.getAttr("loginedMemberId"));
-        loginedMember = Container.getMemberService().findById(memberId);
-      }
+      Member member = rq.getLoginedMember();
 
-      if (loginedMember != null) {
-        promptName = loginedMember.getUsername();
+      if (member != null) {
+        promptName = member.getUsername();
       }
 
       System.out.printf("%s) ", promptName);

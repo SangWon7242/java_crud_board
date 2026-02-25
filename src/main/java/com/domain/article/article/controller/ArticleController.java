@@ -1,5 +1,6 @@
 package com.domain.article.article.controller;
 
+import com.domain.member.dto.Member;
 import com.global.container.Container;
 import com.domain.article.article.dto.Article;
 import com.domain.article.article.service.ArticleService;
@@ -7,7 +8,6 @@ import com.global.controller.Controller;
 import com.global.rq.Rq;
 
 import java.util.List;
-import java.util.Map;
 
 public class ArticleController implements Controller {
   private ArticleService articleService;
@@ -19,7 +19,7 @@ public class ArticleController implements Controller {
   @Override
   public void performAction(Rq rq) {
     if (rq.getActionMethodName().equals("write")) {
-      doWrite();
+      doWrite(rq);
     } else if (rq.getActionMethodName().equals("detail")) {
       showDetail(rq);
     } else if (rq.getActionMethodName().equals("list")) {
@@ -31,7 +31,7 @@ public class ArticleController implements Controller {
     }
   }
 
-  public void doWrite() {
+  public void doWrite(Rq rq) {
     System.out.println("== 게시물 작성 ==");
     System.out.print("제목 : ");
     String title = Container.getSc().nextLine();
@@ -39,7 +39,8 @@ public class ArticleController implements Controller {
     System.out.print("내용 : ");
     String content = Container.getSc().nextLine();
 
-    Article article = articleService.write(title, content);
+    Member member = rq.getLoginedMember();
+    Article article = articleService.write(title, content, member.getId());
 
     System.out.printf("%d번 게시물이 작성되었습니다.\n", article.getId());
   }
@@ -63,6 +64,7 @@ public class ArticleController implements Controller {
     System.out.printf("번호 : %d\n", article.getId());
     System.out.printf("제목 : %s\n", article.getTitle());
     System.out.printf("내용 : %s\n", article.getContent());
+    System.out.printf("작성자 번호 : %d\n", article.getMemberId());
   }
 
   public void showList(Rq rq) {
@@ -78,10 +80,10 @@ public class ArticleController implements Controller {
     }
 
     System.out.println("== 게시물 리스트 ==");
-    System.out.println("번호 | 제목");
+    System.out.println("번호 | 제목 | 작성자 번호");
 
     articles.forEach(article ->
-        System.out.printf("%d | %s\n", article.getId(), article.getTitle())
+        System.out.printf("%d | %s | %d\n", article.getId(), article.getTitle(), article.getMemberId())
     );
   }
 

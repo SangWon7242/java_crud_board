@@ -19,7 +19,10 @@ public class ArticleRepository {
 
   void testData() {
     IntStream.rangeClosed(1, 100)
-        .forEach(i -> save("제목" + i, "내용" + i));
+        .forEach(i -> {
+          int randomNumber = (int) (Math.random() * 3) + 1;
+          save("제목" + i, "내용" + i, randomNumber);
+        });
   }
 
   private List<Article> filteredArticles(String typeCode, String keyword) {
@@ -68,8 +71,8 @@ public class ArticleRepository {
     return sortedArticles(searchResults, orderBy);
   }
 
-  public Article save(String title, String content) {
-    Article article = new Article(title, content);
+  public Article save(String title, String content, int memberId) {
+    Article article = new Article(title, content, memberId);
     articles.add(article);
 
     return article;

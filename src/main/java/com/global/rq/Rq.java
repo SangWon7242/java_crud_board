@@ -1,5 +1,6 @@
 package com.global.rq;
 
+import com.domain.member.dto.Member;
 import com.global.container.Container;
 import com.global.session.Session;
 import com.global.util.Util;
@@ -109,4 +110,12 @@ public class Rq {
     session.removeAttribute(key);
   }
 
+  public Member getLoginedMember() {
+    if (isNotLogined()) return null;
+
+    int memberId = Integer.parseInt(getAttr(loginedMemberId));
+    Member member = Container.getMemberService().findById(memberId);
+
+    return member;
+  }
 }
