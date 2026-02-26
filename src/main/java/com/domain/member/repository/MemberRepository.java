@@ -16,6 +16,7 @@ public class MemberRepository {
   }
 
   void testData() {
+    members.add(new Member("admin", "admin1234", "관리자", "admin@test.com"));
     members.add(new Member("user1", "1234", "홍길동", "user1@test.com"));
     members.add(new Member("user2", "4567", "홍길순", "user2@test.com"));
     members.add(new Member("user3", "5555", "김길현", "user3@test.com"));

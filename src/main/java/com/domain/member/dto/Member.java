@@ -19,6 +19,14 @@ public class Member {
     lastId = 0;
   }
 
+  public String getType() {
+    return isAdmin() ? "관리자" : "일반회원";
+  }
+
+  public boolean isAdmin() {
+    return username.equals("admin");
+  }
+
   public Member(String username, String password, String name, String email) {
     this(++lastId, username, password, name, email);
   }

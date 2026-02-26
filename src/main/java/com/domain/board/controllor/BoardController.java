@@ -2,6 +2,7 @@ package com.domain.board.controllor;
 
 import com.domain.board.dto.Board;
 import com.domain.board.service.BoardService;
+import com.domain.member.dto.Member;
 import com.global.container.Container;
 import com.global.controller.Controller;
 import com.global.rq.Rq;
@@ -24,6 +25,13 @@ public class BoardController implements Controller {
     String name;
     String code;
     Board board;
+
+    Member member = rq.getLoginedMember();
+
+    if (!member.isAdmin()) {
+      System.out.println("관리자만 게시판을 생성할 수 있습니다.");
+      return;
+    }
 
     System.out.println("== 게시판 생성 ==");
 
