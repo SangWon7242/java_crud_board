@@ -48,4 +48,12 @@ public class MemberRepository {
         .findFirst()
         .orElse(null);
   }
+
+  public void modifiedPassword(String email, String password) {
+    Member member = findByEmail(email);
+
+    if (member == null) return;
+
+    member.setPassword(password);
+  }
 }

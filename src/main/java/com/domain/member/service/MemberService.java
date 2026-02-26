@@ -26,4 +26,8 @@ public class MemberService {
   public Member findByEmail(String email) {
     return memberRepository.findByEmail(email);
   }
+
+  public void modifiedPassword(String email, String password) {
+    memberRepository.modifiedPassword(email, password);
+  }
 }

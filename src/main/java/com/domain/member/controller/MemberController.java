@@ -26,6 +26,8 @@ public class MemberController implements Controller {
       showMyPage(rq);
     } else if (rq.getActionMethodName().equals("findByLoginId")) {
       doFindByLoginId(rq);
+    } else if (rq.getActionMethodName().equals("findByPassword")) {
+      doFindByPassword(rq);
     }
   }
 
@@ -255,5 +257,72 @@ public class MemberController implements Controller {
     }
 
     System.out.printf("가입시 입력 한 아이디 : %s\n", member.getUsername());
+  }
+
+  private void doFindByPassword(Rq rq) {
+    String email;
+    String password;
+    String passwordConfirm;
+    Member member;
+
+    System.out.println("== 비밀번호 찾기 ==");
+
+    while (true) {
+      System.out.print("회원 가입시 입력한 이메일 : ");
+      email = Container.getSc().nextLine();
+
+      if (email.trim().isEmpty()) {
+        System.out.println("이메일 입력해주세요.");
+        continue;
+      }
+
+      if (!Util.isValidEmail(email)) {
+        System.out.println("유효하지 않은 이메일 형식입니다. 다시 입력해주세요.");
+        continue;
+      }
+
+      member = memberService.findByEmail(email);
+
+      if (member == null) {
+        System.out.println("존재하지 않는 이메일입니다. 다시 입력해주세요.");
+        continue;
+      }
+
+      break;
+    }
+
+    // 새 비밀번호 입력
+    while (true) {
+      System.out.print("새로 설정할 비밀번호 : ");
+      password = Container.getSc().nextLine();
+
+      if (password.trim().isEmpty()) {
+        System.out.println("비밀번호를 입력해주세요.");
+        continue;
+      }
+      
+      // 새 비밀번호 입력
+      while (true) {
+        System.out.print("새로 설정할 비밀번호 확인 : ");
+        passwordConfirm = Container.getSc().nextLine();
+
+        if (passwordConfirm.trim().isEmpty()) {
+          System.out.println("비밀번호 확인을 입력해주세요.");
+          continue;
+        }
+
+        if(!passwordConfirm.equals(password)) {
+          System.out.println("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+          continue;
+        }
+
+        break;
+      }
+
+      break;
+    }
+
+    memberService.modifiedPassword(email, password);
+    System.out.println("비밀번호가 수정되었습니다.");
   }
 }
