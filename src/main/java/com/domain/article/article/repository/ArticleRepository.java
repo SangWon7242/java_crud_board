@@ -5,6 +5,7 @@ import com.domain.board.dto.Board;
 import com.domain.member.dto.Member;
 import com.global.container.Container;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -86,7 +87,10 @@ public class ArticleRepository {
     Member member = Container.getMemberRepository().findById(memberId);
     Board board = Container.getBoardRepository().findById(boardId);
 
-    Article article = new Article(title, content, memberId, member.getName(), boardId, board.getName(), 0);
+    LocalDateTime createDate = LocalDateTime.now();
+    LocalDateTime updateDate = createDate;
+
+    Article article = new Article(createDate, updateDate, title, content, memberId, member.getName(), boardId, board.getName(), 0);
     articles.add(article);
 
     return article;
@@ -94,6 +98,8 @@ public class ArticleRepository {
 
   public void modify(int id, String title, String content) {
     Article article = findById(id);
+
+    article.setUpdateDate(LocalDateTime.now());
     article.setTitle(title);
     article.setContent(content);
   }

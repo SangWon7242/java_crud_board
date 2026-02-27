@@ -77,6 +77,8 @@ public class ArticleController implements Controller {
 
     System.out.printf("== '%s 게시판' %d번 게시물 상세보기 ==\n", article.getBoardName(), article.getId());
     System.out.printf("번호 : %d\n", article.getId());
+    System.out.printf("작성일 : %s\n", article.getCreateDate());
+    System.out.printf("수성일 : %s\n", article.getUpdateDate());
     System.out.printf("제목 : %s\n", article.getTitle());
     System.out.printf("내용 : %s\n", article.getContent());
     System.out.printf("작성자 : %s\n", article.getWriterName());
@@ -111,10 +113,15 @@ public class ArticleController implements Controller {
     }
 
     System.out.printf("== '%s 게시판' 게시물 리스트(게시물 수 : %d) ==\n", boardName, articles.size());
-    System.out.println("번호 | 제목 | 작성자 | 조회수");
+    System.out.println("번호 | 제목 | 작성자 | 작성일 | 조회수");
 
     articles.forEach(article ->
-        System.out.printf("%d | %s | %s | %d\n", article.getId(), article.getTitle(), article.getWriterName(), article.getHit())
+        System.out.printf("%d | %s | %s | %s | %d\n",
+            article.getId(),
+            article.getTitle(),
+            article.getWriterName(),
+            article.getCreateDate(),
+            article.getHit())
     );
   }
 
