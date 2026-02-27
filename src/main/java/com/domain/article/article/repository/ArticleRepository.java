@@ -86,7 +86,7 @@ public class ArticleRepository {
     Member member = Container.getMemberRepository().findById(memberId);
     Board board = Container.getBoardRepository().findById(boardId);
 
-    Article article = new Article(title, content, memberId, member.getName(), boardId, board.getName());
+    Article article = new Article(title, content, memberId, member.getName(), boardId, board.getName(), 0);
     articles.add(article);
 
     return article;
@@ -108,5 +108,10 @@ public class ArticleRepository {
         .filter(article -> article.getId() == id)
         .findFirst() // 찾은 것중에 첫 번째 데이터 가져와라
         .orElse(null); // 못 찾은 경우에는 null을 넣어라
+  }
+
+  public void increaseHit(int id) {
+    Article article = findById(id);
+    article.setHit(article.getHit() + 1);
   }
 }

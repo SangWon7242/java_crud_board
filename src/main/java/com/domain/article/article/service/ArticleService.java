@@ -33,4 +33,8 @@ public class ArticleService {
   public Article findById(int id) {
     return articleRepository.findById(id);
   }
+
+  public void increaseHit(int id) {
+    articleRepository.increaseHit(id);
+  }
 }

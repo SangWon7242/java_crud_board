@@ -73,11 +73,14 @@ public class ArticleController implements Controller {
       return;
     }
 
+    articleService.increaseHit(id);
+
     System.out.printf("== '%s 게시판' %d번 게시물 상세보기 ==\n", article.getBoardName(), article.getId());
     System.out.printf("번호 : %d\n", article.getId());
     System.out.printf("제목 : %s\n", article.getTitle());
     System.out.printf("내용 : %s\n", article.getContent());
     System.out.printf("작성자 : %s\n", article.getWriterName());
+    System.out.printf("조회수 : %d\n", article.getHit());
   }
 
   public void showList(Rq rq) {
@@ -108,10 +111,10 @@ public class ArticleController implements Controller {
     }
 
     System.out.printf("== '%s 게시판' 게시물 리스트(게시물 수 : %d) ==\n", boardName, articles.size());
-    System.out.println("번호 | 제목 | 작성자");
+    System.out.println("번호 | 제목 | 작성자 | 조회수");
 
     articles.forEach(article ->
-        System.out.printf("%d | %s | %s\n", article.getId(), article.getTitle(), article.getWriterName())
+        System.out.printf("%d | %s | %s | %d\n", article.getId(), article.getTitle(), article.getWriterName(), article.getHit())
     );
   }
 
