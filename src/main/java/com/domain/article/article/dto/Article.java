@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class Article {
   private static int lastId;
   private int id;
-  private LocalDateTime createDate; // 생성날짜
-  private LocalDateTime updateDate; // 수정날짜
+  private String createDate; // 생성날짜
+  private String updateDate; // 수정날짜
   private String title;
   private String content;
   private int memberId;
@@ -26,7 +26,7 @@ public class Article {
     lastId = 0;
   }
 
-  public Article(LocalDateTime createDate, LocalDateTime updateDate,String title, String content, int memberId, String writerName, int boardId, String boardName, int hit) {
+  public Article(String createDate, String updateDate,String title, String content, int memberId, String writerName, int boardId, String boardName, int hit) {
     this(++lastId, createDate, updateDate, title, content, memberId, writerName, boardId, boardName, hit);
   }
 }

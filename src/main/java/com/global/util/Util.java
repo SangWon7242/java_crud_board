@@ -1,5 +1,7 @@
 package com.global.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,5 +32,14 @@ public class Util {
 
   public static boolean isValidEmail(String email) {
     return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+  }
+
+  public static String getNowDateStr() {
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+
+    String dateStr = now.format(formatter);
+
+    return dateStr;
   }
 }
