@@ -1,5 +1,7 @@
 package com.domain.article.article.controller;
 
+import com.domain.board.dto.Board;
+import com.domain.board.service.BoardService;
 import com.domain.member.dto.Member;
 import com.global.container.Container;
 import com.domain.article.article.dto.Article;
@@ -10,9 +12,11 @@ import com.global.rq.Rq;
 import java.util.List;
 
 public class ArticleController implements Controller {
+  private BoardService boardService;
   private ArticleService articleService;
 
   public ArticleController() {
+    boardService = Container.getBoardService();
     articleService = Container.getArticleService();
   }
 
@@ -32,7 +36,16 @@ public class ArticleController implements Controller {
   }
 
   public void doWrite(Rq rq) {
-    System.out.println("== 게시물 작성 ==");
+    int boardId = rq.getIntParamFromUrlPath(5, 1);
+
+    Board board = boardService.findById(boardId);
+
+    if (board == null) {
+      System.out.println("존재하지 않는 게시판입니다.");
+      return;
+    }
+
+    System.out.printf("== '%s 게시판' 게시물 작성 ==\n", board.getName());
     System.out.print("제목 : ");
     String title = Container.getSc().nextLine();
 
@@ -40,7 +53,7 @@ public class ArticleController implements Controller {
     String content = Container.getSc().nextLine();
 
     Member member = rq.getLoginedMember();
-    Article article = articleService.write(title, content, member.getId());
+    Article article = articleService.write(title, content, member.getId(), board.getId());
 
     System.out.printf("%d번 게시물이 작성되었습니다.\n", article.getId());
   }

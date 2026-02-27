@@ -22,4 +22,8 @@ public class BoardService {
   public Board findByCode(String code) {
     return boardRepository.findByCode(code);
   }
+
+  public Board findById(int id) {
+    return boardRepository.findById(id);
+  }
 }

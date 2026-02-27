@@ -1,6 +1,7 @@
 package com.domain.article.article.repository;
 
 import com.domain.article.article.dto.Article;
+import com.domain.board.dto.Board;
 import com.domain.member.dto.Member;
 import com.global.container.Container;
 
@@ -22,8 +23,9 @@ public class ArticleRepository {
   void testData() {
     IntStream.rangeClosed(1, 100)
         .forEach(i -> {
-          int randomNumber = (int) (Math.random() * 3) + 1;
-          save("제목" + i, "내용" + i, randomNumber);
+          int randomMemberId = (int) (Math.random() * 3) + 1;
+          int randomBoardId = (int) (Math.random() * 2) + 1;
+          save("제목" + i, "내용" + i, randomMemberId, randomBoardId);
         });
   }
 
@@ -73,10 +75,11 @@ public class ArticleRepository {
     return sortedArticles(searchResults, orderBy);
   }
 
-  public Article save(String title, String content, int memberId) {
+  public Article save(String title, String content, int memberId, int boardId) {
     Member member = Container.getMemberRepository().findById(memberId);
+    Board board = Container.getBoardRepository().findById(boardId);
 
-    Article article = new Article(title, content, memberId, member.getName());
+    Article article = new Article(title, content, memberId, member.getName(), boardId, board.getName());
     articles.add(article);
 
     return article;

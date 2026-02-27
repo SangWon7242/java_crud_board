@@ -17,8 +17,8 @@ public class ArticleService {
     return articleRepository.findAll(orderBy, typeCode, keyword);
   }
 
-  public Article write(String title, String content, int memberId) {
-    return articleRepository.save(title, content, memberId);
+  public Article write(String title, String content, int memberId, int boardId) {
+    return articleRepository.save(title, content, memberId, boardId);
   }
 
   public void modify(int id, String title, String content) {

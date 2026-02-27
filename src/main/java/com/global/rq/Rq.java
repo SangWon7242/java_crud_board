@@ -57,6 +57,8 @@ public class Rq {
 
   public int getIntParamFromUrlPath(int index, int defaultValue) {
     String[] bits = getUrlPathBits();
+    // /usr/article/write/board/1
+    // ["", "usr", "article", "write", "board", "1"]
 
     if (index < 0 || index >= bits.length) return defaultValue;
 
