@@ -73,7 +73,7 @@ public class ArticleController implements Controller {
       return;
     }
 
-    System.out.printf("== %d번 게시물 상세보기 ==\n", article.getId());
+    System.out.printf("== '%s 게시판' %d번 게시물 상세보기 ==\n", article.getBoardName(), article.getId());
     System.out.printf("번호 : %d\n", article.getId());
     System.out.printf("제목 : %s\n", article.getTitle());
     System.out.printf("내용 : %s\n", article.getContent());
