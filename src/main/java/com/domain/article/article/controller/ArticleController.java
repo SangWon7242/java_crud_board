@@ -1,5 +1,7 @@
 package com.domain.article.article.controller;
 
+import com.domain.article.comment.dto.Comment;
+import com.domain.article.comment.service.CommentService;
 import com.domain.board.dto.Board;
 import com.domain.board.service.BoardService;
 import com.domain.member.dto.Member;
@@ -14,10 +16,12 @@ import java.util.List;
 public class ArticleController implements Controller {
   private BoardService boardService;
   private ArticleService articleService;
+  private CommentService commentService;
 
   public ArticleController() {
     boardService = Container.getBoardService();
     articleService = Container.getArticleService();
+    commentService = Container.getCommentService();
   }
 
   @Override
@@ -83,6 +87,15 @@ public class ArticleController implements Controller {
     System.out.printf("내용 : %s\n", article.getContent());
     System.out.printf("작성자 : %s\n", article.getWriterName());
     System.out.printf("조회수 : %d\n", article.getHit());
+
+    List<Comment> comments = commentService.findAllByArticleId(id);
+
+    if (!comments.isEmpty()) {
+      System.out.println("== 댓글 ==");
+      for (Comment comment : comments) {
+        System.out.printf("%d | %s | %s | %s\n", comment.getId(), comment.getMemberName(), comment.getBody(), comment.getUpdateDate());
+      }
+    }
   }
 
   public void showList(Rq rq) {
@@ -91,6 +104,8 @@ public class ArticleController implements Controller {
     String orderBy = rq.getParam("orderBy", "idDesc");
     String keywordTypeCode = rq.getParam("keywordTypeCode", "all");
     String searchKeyword = rq.getParam("searchKeyword", "");
+    int page = Integer.parseInt(rq.getParam("page", "1"));
+    int itemsPerPage = 10;
 
     String boardName = "전체";
 
@@ -105,14 +120,17 @@ public class ArticleController implements Controller {
       boardName = board.getName();
     }
 
-    List<Article> articles = articleService.getArticles(boardId, orderBy, keywordTypeCode, searchKeyword);
+    int totalItemsCount = articleService.getTotalCount(boardId, keywordTypeCode, searchKeyword);
+    int totalPages = (int) Math.ceil((double) totalItemsCount / itemsPerPage);
+
+    List<Article> articles = articleService.getArticles(boardId, orderBy, keywordTypeCode, searchKeyword, itemsPerPage, page);
 
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
     }
 
-    System.out.printf("== '%s 게시판' 게시물 리스트(게시물 수 : %d) ==\n", boardName, articles.size());
+    System.out.printf("== '%s 게시판' 게시물 리스트(게시물 수 : %d, 페이지 : %d/%d) ==\n", boardName, totalItemsCount, page, totalPages);
     System.out.println("번호 | 제목 | 작성자 | 작성일 | 조회수");
 
     articles.forEach(article ->
@@ -123,6 +141,16 @@ public class ArticleController implements Controller {
             article.getCreateDate(),
             article.getHit())
     );
+
+    System.out.print("페이지 : ");
+    for (int i = 1; i <= totalPages; i++) {
+      if (i == page) {
+        System.out.printf("[%d] ", i);
+      } else {
+        System.out.printf("%d ", i);
+      }
+    }
+    System.out.println();
   }
 
   public void doModify(Rq rq) {

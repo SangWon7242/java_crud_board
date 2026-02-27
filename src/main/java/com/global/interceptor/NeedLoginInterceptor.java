@@ -13,7 +13,10 @@ public class NeedLoginInterceptor implements Interceptor {
            "/usr/article/delete",
            "/usr/member/logout",
            "/usr/member/mypage",
-           "/usr/board/create" -> {
+           "/usr/board/create",
+           "/usr/comment/write",
+           "/usr/comment/modify",
+           "/usr/comment/delete" -> {
         System.out.println("로그인 후 이용해주세요.");
         yield false;
       }

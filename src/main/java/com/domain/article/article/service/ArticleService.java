@@ -13,8 +13,12 @@ public class ArticleService {
     articleRepository = Container.getArticleRepository();
   }
 
-  public List<Article> getArticles(int boardId, String orderBy, String typeCode, String keyword) {
-    return articleRepository.findAll(boardId, orderBy, typeCode, keyword);
+  public List<Article> getArticles(int boardId, String orderBy, String typeCode, String keyword, int itemsPerPage, int page) {
+    return articleRepository.findAll(boardId, orderBy, typeCode, keyword, itemsPerPage, page);
+  }
+
+  public int getTotalCount(int boardId, String typeCode, String keyword) {
+    return articleRepository.getTotalCount(boardId, typeCode, keyword);
   }
 
   public Article write(String title, String content, int memberId, int boardId) {

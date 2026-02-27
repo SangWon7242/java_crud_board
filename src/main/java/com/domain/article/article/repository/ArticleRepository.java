@@ -76,12 +76,26 @@ public class ArticleRepository {
     return articles;
   }
 
-  public List<Article> findAll(int boardId, String orderBy, String typeCode, String keyword) {
+  public List<Article> findAll(int boardId, String orderBy, String typeCode, String keyword, int itemsPerPage, int page) {
     // 검색 수행
     List<Article> searchResults = filteredArticles(boardId, typeCode, keyword);
 
     // 정렬 수행
-    return sortedArticles(searchResults, orderBy);
+    searchResults = sortedArticles(searchResults, orderBy);
+
+    int fromIndex = (page - 1) * itemsPerPage;
+
+    if (fromIndex >= searchResults.size()) {
+      return new ArrayList<>();
+    }
+
+    int toIndex = Math.min(fromIndex + itemsPerPage, searchResults.size());
+
+    return searchResults.subList(fromIndex, toIndex);
+  }
+
+  public int getTotalCount(int boardId, String typeCode, String keyword) {
+    return filteredArticles(boardId, typeCode, keyword).size();
   }
 
   public Article save(String title, String content, int memberId, int boardId) {

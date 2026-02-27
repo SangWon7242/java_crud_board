@@ -61,6 +61,8 @@ public class App {
             return Container.getMemberController();
           case "article":
             return Container.getArticleController();
+          case "comment":
+            return Container.getCommentController();
         }
         break;
       case "adm":
