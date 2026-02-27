@@ -81,18 +81,33 @@ public class ArticleController implements Controller {
   }
 
   public void showList(Rq rq) {
+    // URL에 boardId가 있으면 해당 boardId를, 없으면 0을 할당 (0은 전체)
+    int boardId = rq.getIntParamFromUrlPath(5, 0);
     String orderBy = rq.getParam("orderBy", "idDesc");
     String keywordTypeCode = rq.getParam("keywordTypeCode", "all");
     String searchKeyword = rq.getParam("searchKeyword", "");
 
-    List<Article> articles = articleService.getArticles(orderBy, keywordTypeCode, searchKeyword);
+    String boardName = "전체";
+
+    if (boardId != 0) {
+      Board board = boardService.findById(boardId);
+
+      if (board == null) {
+        System.out.println("존재하지 않는 게시판입니다.");
+        return;
+      }
+
+      boardName = board.getName();
+    }
+
+    List<Article> articles = articleService.getArticles(boardId, orderBy, keywordTypeCode, searchKeyword);
 
     if (articles.isEmpty()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
     }
 
-    System.out.println("== 게시물 리스트 ==");
+    System.out.printf("== '%s 게시판' 게시물 리스트(게시물 수 : %d) ==\n", boardName, articles.size());
     System.out.println("번호 | 제목 | 작성자");
 
     articles.forEach(article ->

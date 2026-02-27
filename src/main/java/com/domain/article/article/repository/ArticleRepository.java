@@ -29,18 +29,25 @@ public class ArticleRepository {
         });
   }
 
-  private List<Article> filteredArticles(String typeCode, String keyword) {
-    List<Article> searchResults = findAll();
+  private List<Article> filteredArticles(int boardId, String typeCode, String keyword) {
+    List<Article> searchResults = articles;
 
-    if(!keyword.isEmpty()) {
+    if (boardId != 0) {
+      searchResults = searchResults.stream()
+          .filter(article -> article.getBoardId() == boardId)
+          .collect(Collectors.toList());
+    }
+
+    if (!keyword.isEmpty()) {
+      List<Article> finalSearchResults = searchResults;
       searchResults = switch (typeCode) {
-        case "title" -> articles.stream()
+        case "title" -> finalSearchResults.stream()
             .filter(article -> article.getTitle().contains(keyword))
             .collect(Collectors.toList());
-        case "content" -> articles.stream()
+        case "content" -> finalSearchResults.stream()
             .filter(article -> article.getContent().contains(keyword))
             .collect(Collectors.toList());
-        default -> articles.stream()
+        default -> finalSearchResults.stream()
             .filter(article -> article.getTitle().contains(keyword) || article.getContent().contains(keyword))
             .collect(Collectors.toList());
       };
@@ -49,15 +56,11 @@ public class ArticleRepository {
     return searchResults;
   }
 
-  public List<Article> findAll() {
-    return articles;
-  }
-
   private List<Article> sortedArticles(List<Article> articles, String orderBy) {
     List<Article> sortedArticles = new ArrayList<>(articles);
 
     // 정렬 로직
-    if("idAsc".equals(orderBy)) {
+    if ("idAsc".equals(orderBy)) {
       // Article 객체의 id 값을 기준으로 오름차순 정렬
       sortedArticles.sort(Comparator.comparingInt(Article::getId));
     } else {
@@ -67,10 +70,14 @@ public class ArticleRepository {
     return sortedArticles;
   }
 
-  public List<Article> findAll(String orderBy, String typeCode, String keyword) {
+  public List<Article> findAll() {
+    return articles;
+  }
+
+  public List<Article> findAll(int boardId, String orderBy, String typeCode, String keyword) {
     // 검색 수행
-    List<Article> searchResults = filteredArticles(typeCode, keyword);
-    
+    List<Article> searchResults = filteredArticles(boardId, typeCode, keyword);
+
     // 정렬 수행
     return sortedArticles(searchResults, orderBy);
   }
